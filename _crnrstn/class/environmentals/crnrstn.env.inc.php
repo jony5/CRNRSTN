@@ -5,12 +5,12 @@
 #  CRNRSTN Suite :: An Open Source PHP Class Library to facilitate the operation of an application across multiple hosting environments.
 #  Copyright (C) 2012-2018 Evifweb Development
 #  VERSION :: 1.0.0
-#  RELEASE DATE :: July 4, 2018 Happy Independence Day from my dog and I to you...whereever and whenever you are.
+#  RELEASE DATE :: July 4, 2018 Happy Independence Day from my dog and I to you...wherever and whenever you are.
 #  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
 #  URI :: http://crnrstn.evifweb.com/
 #  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 
 #			   environments (e.g. localhost, stage, preprod, and production). With this tool, data and functionality with 
-#			   characteristics that inherehtly create distinctions from one environment to the next...such as IP address restrictions, 
+#			   characteristics that inherently create distinctions from one environment to the next...such as IP address restrictions, 
 #			   error logging profiles, and database authentication credentials...can all be managed through one framework for an entire 
 #			   application. Once CRNRSTN has been configured for your different hosting environments, seamlessly release a web 
 #			   application from one environment to the next without having to change your code-base to account for environmentally 
@@ -24,7 +24,7 @@
 #  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License along with this program. This license can also be downloaded from
-#  http://crnrstn.evifweb.com/license.txt.  If not, see <http://www.gnu.org/licenses/><strong></strong>
+#  http://crnrstn.evifweb.com/license.txt.  If not, see <http://www.gnu.org/licenses/>
 
 /*
 // CLASS :: crnrstn_environmentals
