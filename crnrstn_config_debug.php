@@ -331,8 +331,8 @@ if($oCRNRSTN_ENV->debugMode>0){
 	// DATABASE TESTING. DATABASE CONNECTIVITY PARAMS MANAGED BY CRNRSTN.
 	$mysqli = $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection();
 	
-	$query = 'SELECT `crnrstn_class`.`CLASSID`,`crnrstn_class`.`NAME` FROM `crnrstn_class` WHERE `crnrstn_class`.`ISACTIVE`="1" ORDER BY `crnrstn_class`.`NAV_POSITION` LIMIT 5;';
-	$query .= 'SELECT `crnrstn_class`.`CLASSID`,`crnrstn_class`.`URI` FROM `crnrstn_class` WHERE `crnrstn_class`.`ISACTIVE`="1" ORDER BY `crnrstn_class`.`NAV_POSITION` LIMIT 5;';
+	$query = 'SELECT `sessions`.`SESSIONID`,`sessions`.`USERID` FROM `sessions` WHERE `sessions`.`ISACTIVE`="1" ORDER BY `sessions`.`SESSIONID` LIMIT 3;';
+	$query .= 'SELECT `sessions`.`SESSIONID`,`sessions`.`USERID` FROM `sessions` WHERE `sessions`.`ISACTIVE`="1" ORDER BY `sessions`.`USERID` LIMIT 3;';
 	?>
     
     <div class="crnrstn_param"><em style="font-family:'Courier New', Courier, monospace;"><?php echo $query; ?></em></div>
