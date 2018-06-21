@@ -42,7 +42,9 @@ Overview of configuration/installation steps ::
    environments. 
    
    *Optional Database include: /config.database.secure/_crnrstn.db.config.inc.php
+   
    *Optional IP Auth include: /config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php
+   
    *Optional IP Auth include: /config.ipauthmgr.secure/grantexclusiveaccess/_crnrstn.ipauthmgr.config.inc.php
    
 5) Confirm successful CRNRSTN configuration in each environment by running the debug file, 
