@@ -38,8 +38,12 @@ Overview of configuration/installation steps ::
    environmental detection.
    
 4) Promote this updated CRNRSTN configuration file from Step 3 along with any configured 
-   configuration include files (for database connectivity and IP authorization) to all of your 
-   environments. See example config file: http://crnrstn.evifweb.com/documentation/classes/environmentals/
+   configuration include files (for *database connectivity and *IP authorization) to all of your 
+   environments. 
+   
+   *Optional Database include: /config.database.secure/_crnrstn.db.config.inc.php
+   *Optional IP Auth include: /config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php
+   *Optional IP Auth include: /config.ipauthmgr.secure/grantexclusiveaccess/_crnrstn.ipauthmgr.config.inc.php
    
 5) Confirm successful CRNRSTN configuration in each environment by running the debug file, 
    crnrstn_config_debug.php within each respective environment to ensure that SERVER_NAME is 
