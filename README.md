@@ -31,7 +31,7 @@ Overview of configuration/installation steps ::
 3) Update the CRNRSTN configuration file, _crnrstn.config.inc.php, to have it represent the full 
    landscape of hosting environments within which your application will be running. Use the 
    $_SERVER data presented by crnrstn_config_debug.php within each environment from Step 2 above 
-   (see working example at http://crnrstn.evifweb.com/crnrstn_config_debug.php to review debug 
+   (see working debug example at http://crnrstn.evifweb.com/crnrstn_config_debug.php to review debug 
    output of CRNRSTN when fully configured). The CRNRSTN debugger assumes that $_SERVER param 
    "SERVER_NAME" has been defined for each environment...so at least define that one (1) SERVER 
    param through defineEnvResource() for each hosting environment to support CRNRSTN's 
@@ -39,7 +39,7 @@ Overview of configuration/installation steps ::
    
 4) Promote this updated CRNRSTN configuration file from Step 3 along with any configured 
    configuration include files (for database connectivity and IP authorization) to all of your 
-   environments. See example config file: http://crnrstn.evifweb.com/crnrstn_config_debug.php
+   environments. See example config file: http://crnrstn.evifweb.com/documentation/classes/environmentals/
    
 5) Confirm successful CRNRSTN configuration in each environment by running the debug file, 
    crnrstn_config_debug.php within each respective environment to ensure that SERVER_NAME is 
