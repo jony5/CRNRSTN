@@ -1185,20 +1185,22 @@ class crnrstn_ip_auth_manager {
 			
 		//
 		// PROCESS EXCLUSIVE ACCESS
-		if(is_array(self::$allowedIp_ARRAY[$env])){
-			foreach (self::$allowedIp_ARRAY[$env] as $pos=>$val) {
-				if(self::$allowedIpRangeMIN_ARRAY[$env][$pos]!=0){
-					$tmp_endState = 1;
-				}
-	
-				if(($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)>=self::$allowedIpRangeMIN_ARRAY[$env][$pos]) && ($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)<=self::$allowedIpRangeMAX_ARRAY[$env][$pos])){
-					
-					//
-					// STORE SUCCESSFUL IP ADDRESS AUTHORIZATION TO SESSION
-					$this->oSESSION_MGR->setSessionParam('CRNRSTN_ACCESS_AUTHORIZED', 1);
-					$this->oSESSION_MGR->setSessionParam('CRNRSTN_AUTHORIZED_IP', $ip);
-					$this->oSESSION_MGR->setSessionIp('SESSION_IP', $ip);
-					return true;
+		if(isset(self::$allowedIp_ARRAY[$env])){
+			if(is_array(self::$allowedIp_ARRAY[$env])){
+				foreach (self::$allowedIp_ARRAY[$env] as $pos=>$val) {
+					if(self::$allowedIpRangeMIN_ARRAY[$env][$pos]!=0){
+						$tmp_endState = 1;
+					}
+		
+					if(($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)>=self::$allowedIpRangeMIN_ARRAY[$env][$pos]) && ($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)<=self::$allowedIpRangeMAX_ARRAY[$env][$pos])){
+						
+						//
+						// STORE SUCCESSFUL IP ADDRESS AUTHORIZATION TO SESSION
+						$this->oSESSION_MGR->setSessionParam('CRNRSTN_ACCESS_AUTHORIZED', 1);
+						$this->oSESSION_MGR->setSessionParam('CRNRSTN_AUTHORIZED_IP', $ip);
+						$this->oSESSION_MGR->setSessionIp('SESSION_IP', $ip);
+						return true;
+					}
 				}
 			}
 		}

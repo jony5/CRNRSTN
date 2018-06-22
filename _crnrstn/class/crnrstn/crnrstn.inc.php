@@ -405,13 +405,15 @@ class crnrstn {
 				// RETURN SERVER APPLICATION KEY BASED UPON A BEST FIT SCENARIO. FOR ANY TIES...FIRST COME FIRST SERVED.
 				foreach (self::$handle_resource_ARRAY as $serial=>$resource_ARRAY) {
 					foreach($resource_ARRAY as $env=>$key){
-						if(self::$env_detect_ARRAY[$serial][$env]>0){
-							if(self::$envMatchCount < self::$env_detect_ARRAY[$serial][$env]){
-								self::$envMatchCount = self::$env_detect_ARRAY[$serial][$env];
-								self::$serverAppKey[$serial] = $env;
-								self::$oLogger->logDebug("crnrstn :: attempting to detect running environment. environment [".$env."] is new detection leader having [".self::$envMatchCount."] SERVER matches.");
+						if(isset(self::$env_detect_ARRAY[$serial][$env])){
+							if(self::$env_detect_ARRAY[$serial][$env]>0){
+								if(self::$envMatchCount < self::$env_detect_ARRAY[$serial][$env]){
+									self::$envMatchCount = self::$env_detect_ARRAY[$serial][$env];
+									self::$serverAppKey[$serial] = $env;
+									self::$oLogger->logDebug("crnrstn :: attempting to detect running environment. environment [".$env."] is new detection leader having [".self::$envMatchCount."] SERVER matches.");
+								}
+							
 							}
-						
 						}
 					}
 				}

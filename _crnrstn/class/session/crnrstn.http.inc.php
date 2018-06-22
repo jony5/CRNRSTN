@@ -59,6 +59,7 @@ class crnrstn_http_manager {
 				return self::$httpHeader_ARRAY;
 			break;		
 			default:
+				$httpHeaders = "";
 				for($i=0;$i<sizeof(self::$httpHeader_ARRAY);$i++){
 					$httpHeaders .= self::$httpHeader_ARRAY[$i].',';
 				}
@@ -81,10 +82,14 @@ class crnrstn_http_manager {
 	}
 	
 	public function issetParam($superGlobal, $param){
-		if(strlen($superGlobal[$param])>0){
-			return true;
+		if(isset($superGlobal[$param])){
+			if(strlen($superGlobal[$param])>0){
+				return true;
+			}else{
+				return false;
+			}
 		}else{
-			return false;
+			return false;	
 		}
 	
 	}
