@@ -74,14 +74,18 @@ session_regenerate_id(true);
 						foreach($data1 as $key2=>$data2){
 							if(is_array($data2)){
 								foreach($data2 as $key3=>$data3){
+									if($key3=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data3="XxXxXxXxXxXxX"; }
+									if($key3=="_CRNRSTN_COOKIE_ENCRYPT_SECRET_KEY"){ $data3="XxXxXxXxXxXxX"; }
 									echo '<div class="server_param">'.$key3." = ".$data3."</div>";
 								}
 							}else{
+								#if($key2=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data2="XxXxXxXxXxXxX"; }
 								echo '<div class="server_param">'.$key2." = ".$data2."</div>";
 							}
 						
 						}
 					}else{
+						#if($key1=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data1="XxXxXxXxXxXxX"; }
 						echo '<div class="server_param">'.$key1." = ".$data1."</div>";
 					}
 				}
