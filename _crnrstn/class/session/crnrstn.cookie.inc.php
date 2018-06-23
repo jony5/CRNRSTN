@@ -46,9 +46,7 @@ class crnrstn_cookie_manager {
 
 		//
 		// INSTANTIATE LOGGER
-		if(!isset(self::$oLogger)){
-			self::$oLogger = new crnrstn_logging();
-		}
+		self::$oLogger = new crnrstn_logging(); 
 		
 		//
 		// IF WE HAVE COOKIE NAME, ADD THE COOKIE
@@ -254,7 +252,9 @@ class crnrstn_cookie_manager {
 		
 		try{
 			if(isset($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_CIPHER"])){
-		
+				#
+				# Source: http://php.net/manual/en/function.openssl-encrypt.php
+				#
 				$ivlen = openssl_cipher_iv_length($cipher=$_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_CIPHER"]);
 				$iv = openssl_random_pseudo_bytes($ivlen);
 				$ciphertext_raw = openssl_encrypt($val, $_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_CIPHER"], $_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_SECRET_KEY"], $options=$_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_OPTIONS"], $iv);
@@ -274,12 +274,15 @@ class crnrstn_cookie_manager {
 		}
 	
 	}
-	 
+	
+	
 	private function cookieParamDecrypt($val){
 		try{
 			
 			if(isset($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_CIPHER"])){
-
+				#
+				# Source: http://php.net/manual/en/function.openssl-encrypt.php
+				#
 				$c = base64_decode($val);
 				$ivlen = openssl_cipher_iv_length($cipher=$_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY']]["_CRNRSTN_COOKIE_ENCRYPT_CIPHER"]);
 				$iv = substr($c, 0, $ivlen);

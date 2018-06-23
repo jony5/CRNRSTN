@@ -79,13 +79,11 @@ session_regenerate_id(true);
 									echo '<div class="server_param">'.$key3." = ".$data3."</div>";
 								}
 							}else{
-								#if($key2=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data2="XxXxXxXxXxXxX"; }
 								echo '<div class="server_param">'.$key2." = ".$data2."</div>";
 							}
 						
 						}
 					}else{
-						#if($key1=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data1="XxXxXxXxXxXxX"; }
 						echo '<div class="server_param">'.$key1." = ".$data1."</div>";
 					}
 				}

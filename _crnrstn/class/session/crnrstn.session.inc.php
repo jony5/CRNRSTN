@@ -34,7 +34,7 @@
 class crnrstn_session_manager {
 
 	//
-	// SERIAL AND ENCRYPTION KEY FOR CRNRSTN SESSION VALUES
+	//CONFIG SERIAL AND ENCRYPTION KEY FOR CRNRSTN SESSION VALUES
 	public $configSerial;
 	public $resourceKey;
 	private static $cacheSessionParam_ARRAY = array();
@@ -117,7 +117,7 @@ class crnrstn_session_manager {
 		$this->resourceKey = $_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY'];
 		
 		//
-		// RETURN THE VALUE ASSIGNED TO A PARTICULAR SESSION PARAMETER
+		// RETURN THE VALUE ASSIGNED TO A PARTICULAR SESSION PARAMETER AND ENSURE THAT THE APPROPRIATE TYPE IS CAST
 		if(isset($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_'.crc32($sessParam)])){
 			if($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_ENCRYPT_'.crc32($sessParam)]>0){
 				switch($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_DTYPE_'.crc32($sessParam)]){
@@ -180,6 +180,9 @@ class crnrstn_session_manager {
 		//
 		// RETURN THE VALUE ASSIGNED TO A PARTICULAR SESSION PARAMETER
 		if(isset($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_'.crc32($sessParam)])){
+			
+			//
+			// IF SESSION ENCRYPTION IS ENABLED, WE HAVE TO DECRYPT BEFORE WE CAN CHECK IF EMPTY
 			if($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_ENCRYPT_'.crc32($sessParam)]>0){
 				if(isset(self::$cacheSessionParam_ARRAY[$sessParam])){
 					if(self::$cacheSessionParam_ARRAY[$sessParam]!=""){
@@ -200,7 +203,7 @@ class crnrstn_session_manager {
 			}else{
 				
 				//
-				// NO ENCRYPTION APPLIED TO PARAM. RETURN SESSION VALUE.
+				// NO ENCRYPTION APPLIED TO PARAM. CHECK IF EMPTY.
 				if($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_'.crc32($sessParam)]!=""){
 					return true;
 				}else{
@@ -232,6 +235,10 @@ class crnrstn_session_manager {
 	private function sessionParamEncrypt($val){		
 		try{
 			if(isset($_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_CIPHER"])){
+				
+				#
+				# Source: http://php.net/manual/en/function.openssl-encrypt.php
+				#
 				$ivlen = openssl_cipher_iv_length($cipher=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_CIPHER"]);
 				$iv = openssl_random_pseudo_bytes($ivlen);
 				$ciphertext_raw = openssl_encrypt($val, $_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_CIPHER"], $_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"], $options=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_OPTIONS"], $iv);
@@ -257,6 +264,9 @@ class crnrstn_session_manager {
 			
 			if(isset($_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_CIPHER"])){
 
+				#
+				# Source: http://php.net/manual/en/function.openssl-encrypt.php
+				#
 				$c = base64_decode($val);
 				$ivlen = openssl_cipher_iv_length($cipher=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".$this->resourceKey]["_CRNRSTN_SESS_ENCRYPT_CIPHER"]);
 				$iv = substr($c, 0, $ivlen);

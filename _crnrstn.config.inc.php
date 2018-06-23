@@ -7,17 +7,17 @@ if ( ! session_id() ) @ session_start();
 //
 // CRNRSTN CLASS INCLUDES ::
 require('./_crnrstn.root.inc.php');
-require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');				// CRNRSTN
-require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');				// LOGGING
+require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');						// CRNRSTN
+require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');					// LOGGING
 require($CRNRSTN_ROOT.'/_crnrstn/class/environmentals/crnrstn.env.inc.php');			// ENVIRONMENTALS
 require($CRNRSTN_ROOT.'/_crnrstn/class/security/crnrstn.ipauthmgr.inc.php');			// SECURITY
 require($CRNRSTN_ROOT.'/_crnrstn/class/database/mysqli/crnrstn.mysqli.inc.php');		// DATABASE
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');					// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');			// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');				// SOAP MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');			// SESSION MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');			// COOKIE MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');				// HTTP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');							// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');				// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');						// SOAP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');				// SESSION MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');				// COOKIE MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');					// HTTP MANAGEMENT
 
 
 //
@@ -25,7 +25,7 @@ require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');				// HTT
 $CRNRSTN_debugMode = 1; 
 
 //
-// INSTANTIATE AN INSTANCE OF CRNRSTN BY PASSING A SERIALIZATION KEY FOR THIS CONFIG FILE AND THE DEBUG MODE.
+// INSTANTIATE AN INSTANCE OF CRNRSTN BY PASSING A SERIALIZATION KEY FOR THIS CONFIG FILE.
 $oCRNRSTN = new crnrstn('s3ria1izati0n-k3yz', $CRNRSTN_debugMode);
 
 ##
@@ -79,7 +79,7 @@ $oCRNRSTN->addEnvironment('LOCALHOST_PC', E_ALL & ~E_NOTICE & ~E_STRICT);
 $oCRNRSTN->addEnvironment('LOCALHOST_MAC', E_ALL);
 $oCRNRSTN->addEnvironment('BLUEHOST_2018', E_ALL & ~E_NOTICE & ~E_STRICT);
 
-# # # NO DATABASE? IT IS OK TO REMOVE THIS METHOD CALL.
+# # #
 # INITIALIZE DATABASE FUNCTIONALITY FOR EACH ENVIRONMENT. 2 WAYS TO USE THIS METHOD.
 # FORMAT ONE (1) :: $oCRNRSTN->addDatabase([environment-key], [path-to-db-configuration-file]);
 $oCRNRSTN->addDatabase('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_wwwroot//xampp//htdocs//crnrstn//config.database.secure//_crnrstn.db.config.inc.php');
@@ -124,7 +124,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');				// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
 	$oCRNRSTN->initLogging('LOCALHOST_MAC', 'SCREEN');		// SYSTEM DEFAULT ERROR LOGGING
 	
-	# # #  NO IP RESTRICTIONS? IT IS OK TO REMOVE THIS METHOD CALL.
+	# # #
 	# INITIALIZE SECURITY PROTOCOLS FOR EXCLUSIVE RESOURCE ACCESS. 2 FORMATS.
 	# FORMAT 1. PASS IN ENVIRONMENT KEY AND PATH TO CONFIGURED CRNRSTN IP AUTHENTICATION MANAGER CONFIG FILE ON THE SERVER.
 	# $oCRNRSTN->grantExclusiveAccess([environment-key], [path-to-db-configuration-file]);
@@ -139,7 +139,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1, 127.*, 130.51.10.*');
 	$oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1, 130.*, 130.51.10.*, FE80::230:80FF:FEF3:4701');
 	
-	# # #  NO IP RESTRICTIONS? IT IS OK TO REMOVE THIS METHOD CALL.
+	# # #
 	# INITIALIZE SECURITY PROTOCOLS FOR RESOURCE DENIAL. 2 FORMATS.
 	# FORMAT 1. PASS IN ENVIRONMENT KEY AND PATH TO THE "DENY ACCESS" CONFIG FILE ON THE SERVER. (see /config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php)
 	# $oCRNRSTN->denyAccess([environment-key], [path-to-ip-authorization-configuration-file]);
@@ -151,7 +151,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	# $oCRNRSTN->denyAccess('LOCALHOST_MAC','172.16.110.*');
 	$oCRNRSTN->denyAccess('LOCALHOST_PC','127.0.0.10, 127.0.0.2, 127.0.0.3, 127.0.0.4, 127.0.0.5');
 	
-	# # # NO SESSION ENCRYPTION DESIRED? IT IS OK TO REMOVE THIS METHOD CALL.
+	# # #
 	# INITIALIZATION FOR ENCRYPTION :: CRNRSTN SESSION DATA :: ADVANCED CONFIGURATION PARAMETERS
 	/*
 	To configure any of your SERVER environments to hide select CRNRSTN configuration session data behind a layer of encryption, 
@@ -183,7 +183,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->initSessionEncryption('LOCALHOST_MAC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
 	$oCRNRSTN->initSessionEncryption('BLUEHOST_2018', 'AES-256-CTR', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'ripemd256');
 	
-	# # #  NO COOKIE ENCRYPTION DESIRED? IT IS OK TO REMOVE THIS METHOD CALL.
+	# # #
 	# INITIALIZATION FOR ENCRYPTION :: CRNRSTN COOKIE DATA :: ADVANCED CONFIGURATION PARAMETERS
 	/*
 	CAUTION :: Some hash_algos() returned methods will NOT be compatible with hash_hmac() which CRNRSTN uses in validating 

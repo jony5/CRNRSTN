@@ -151,13 +151,13 @@ class crnrstn_mysqli_conn_manager {
 	private function prepDatabaseConfig($host=NULL, $db=NULL, $un=NULL, $port=NULL, $pwd=NULL){
 		
 		//
-		// IF HASHED INPUT PARAMETERS MATCH WHAT HAS BEEN STORED IN SESSION, PREPARATION IS COMPLETE
+		// IF HASHED INPUT PARAMETERS MATCH WHAT HAS BEEN STORED IN SESSION, PREPARATION IS COMPLETE.
 		if($this->oSESSION_MGR->getSessionParam('_CRNRSTN_DB_CNFG') == md5($host.'::'.$db.'::'.$un.'::'.$port.'::'.$pwd)){
 			return true;
 		}
 		
 		//
-		// XXXXX->returnConnection();
+		// $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection();
 		if($host==NULL){
 
 			//
@@ -199,7 +199,7 @@ class crnrstn_mysqli_conn_manager {
 		}else{
 			
 			//
-			// XXXXX->returnConnection('host');
+			//  $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection('host');
 			if($db==NULL){
 				if(!($this->oSESSION_MGR->issetSessionParam('_CRNRSTN_DB_DB'))){
 					foreach (self::$db_host[self::$appEnvKey] as $tmp_db_host=>$tmp_host_array) {
@@ -250,7 +250,7 @@ class crnrstn_mysqli_conn_manager {
 				if($un==NULL){
 					
 					//
-					// XXXXX->returnConnection('host', 'database');
+					//  $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection('host', 'database');
 					if(!($this->oSESSION_MGR->issetSessionParam('_CRNRSTN_DB_UN'))){
 						foreach (self::$db_host[self::$appEnvKey] as $tmp_db_host=>$tmp_host_array) {
 							if($tmp_db_host==crc32($host)){
@@ -301,8 +301,7 @@ class crnrstn_mysqli_conn_manager {
 					if($port==NULL && $pwd==NULL){
 						
 						//
-						// CRNRSTN ENVIRONMENTAL DETECTION + METHOD PARAMETERS + VALUES FROM THE CONFIGURATION FILE
-						// XXXXX->returnConnection('host', 'database', 'user');
+						//  $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection('host', 'database', 'user');
 						if(crc32($un)!=$this->oSESSION_MGR->getSessionParam('_CRNRSTN_DB_UN')){
 							foreach (self::$db_host[self::$appEnvKey] as $tmp_db_host=>$tmp_host_array) {
 								if($tmp_db_host==crc32($host)){
@@ -356,7 +355,7 @@ class crnrstn_mysqli_conn_manager {
 							
 							//
 							// CRNRSTN ENVIRONMENTAL DETECTION + METHOD PARAMETERS + VALUES FROM THE CONFIGURATION FILE
-							// XXXXX->returnConnection('host', 'database', 'user', 'port');
+							// $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection('host', 'database', 'user', 'port');
 							if(crc32($un)!=$this->oSESSION_MGR->getSessionParam('_CRNRSTN_DB_UN')){
 								foreach (self::$db_host[self::$appEnvKey] as $tmp_db_host=>$tmp_host_array) {
 									if($tmp_db_host==crc32($host)){
@@ -364,7 +363,7 @@ class crnrstn_mysqli_conn_manager {
 											if($tmp_db_db==crc32($db)){
 												foreach($tmp_db_array as $tmp_un=>$oMYSQLI){
 													if($tmp_un==crc32($un)){
-													
+														
 														//
 														// INITIALIZE/REFRESH SESSION PARAMETERS
 														$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_ENV', self::$appEnvKey);
@@ -390,7 +389,7 @@ class crnrstn_mysqli_conn_manager {
 									}
 								}
 							}else{
-							
+								
 								//
 								// INITIALIZE/REFRESH OPTIMIZATION HASH (IN SESSION) TO STREAMLINE PREPARATION OF DATABASE CONNECTION
 								$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_CNFG', md5($host.'::'.$db.'::'.$un.'::'.$port.'::'.$pwd));
@@ -403,7 +402,7 @@ class crnrstn_mysqli_conn_manager {
 						}else{
 							
 							//
-							// XXXXX->returnConnection('host', 'database', 'user', 'port', 'pwd');
+							// $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->returnConnection('host', 'database', 'user', 'port', 'pwd');
 							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_ENV', self::$appEnvKey);
 							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_HOST', crc32($host));
 							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_DB', crc32($db));
@@ -549,7 +548,6 @@ class crnrstn_mysqli_conn_manager {
 			// RETURN NOTHING
 			return false;
 		}
-	
 	}
 	
 	public function processMultiQuery($mysqli, $query){

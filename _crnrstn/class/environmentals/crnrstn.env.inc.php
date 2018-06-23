@@ -70,7 +70,7 @@ class crnrstn_environmentals {
 		
 		$this->oCOOKIE_MGR = new crnrstn_cookie_manager();
 		$this->oHTTP_MGR = new crnrstn_http_manager();
-				
+		
 		if(!($instanceType=='simple_configcheck')){
 			
 			try{
@@ -94,7 +94,7 @@ class crnrstn_environmentals {
 						$this->oCRNRSTN_IPSECURITY_MGR = clone $oCRNRSTN->oCRNRSTN_IPSECURITY_MGR;
 						unset($oCRNRSTN->oCRNRSTN_IPSECURITY_MGR);
 						
-						//					
+						// 
 						// WE HAVE SELECTED ENVIRONMENT KEY. INITIALIZE. CONFIG KEY AND ENV KEY.
 						// FLASH CONFIG KEY AND ENV KEY TO SESSION.
 						$this->initRuntimeConfig();
@@ -146,6 +146,7 @@ class crnrstn_environmentals {
 								//
 								// WE COULD PERHAPS USE A MORE GRACEFUL WAY TO TRANSITION TO ERR...BUT THIS WORKS
 								// THE METHOD returnSrvrRespStatus() CONTAINS SOME CUSTOM HTML FOR OUTPUT IF YOU WANT TO TWEAK ITS DESIGN
+								// PERHAPS SOME FUTURE RELEASE OF CRNRSTN CAN 
 								$this->returnSrvrRespStatus(403);
 								exit();
 							}
@@ -168,7 +169,6 @@ class crnrstn_environmentals {
 				//
 				// SEND THIS THROUGH THE LOGGER OBJECT
 				self::$oLogger->captureNotice('oCRNRSTN_ENV->__construct()', LOG_ALERT, $e->getMessage());
-				
 				
 			}
 
@@ -337,8 +337,8 @@ class crnrstn_environmentals {
 			
 		}else{
 			
-			// 
-			// CHECK FOR NULL. IF NULL, DO NOTHING.
+			//
+			// DO WE HAVE ANY IP DATA TO PROCESS
 			if($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey] != ""){
 				
 				//
@@ -367,7 +367,7 @@ class crnrstn_environmentals {
 		}else{
 			
 			// 
-			// CHECK FOR NULL. IF NULL, DO NOTHING.
+			// DO WE HAVE IP DATA TO PROESS
 			if($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP'] != ""){
 				self::$oLogger->logDebug("crnrstn_environmentals :: (from session[".session_id()."]) process grant exclusive access IP[".$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']."] for this connection.");
 				$this->oCRNRSTN_IPSECURITY_MGR->grantAccessWKey(self::$resourceKey, $_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']);
@@ -463,7 +463,7 @@ class crnrstn_environmentals {
 		
 		//
 		// ITERATE THROUGH handle_resource_ARRAY TO EXTRACT ENV SPECIFIC USER DEFINED PARAMS
-		// TRANSFER DATA (JUST FOR THE RUNNING ENV) FROM oCRNRSTN RESOURCE ARRAY TO oCRNRSTN_ENV RESOURCE ARRAY
+		// TRANSFER DATA (JUST FOR THE RUNNING ENV) FROM oCRNRSTN RESOURCE ARRAY TO SESSION
 		$this->getHandle_resource_ARRAY = $oCRNRSTN->getHandle_resource_ARRAY();
 		$tmp_envkey = $this->oSESSION_MGR->getSessionKey();
 		foreach($this->getHandle_resource_ARRAY[crc32($this->configSerial)][$tmp_envkey] as $key=>$value){
@@ -472,7 +472,7 @@ class crnrstn_environmentals {
 		}
 		
 		//
-		// INITIALIZE oCRNRSTN_ENV CLASS OBJECT WITH ANY WILDCARDS
+		// INITIALIZE SESSION WITH ANY WILDCARDS
 		if(isset($this->getHandle_resource_ARRAY[crc32($this->configSerial)][crc32('*')])){
 			foreach($this->getHandle_resource_ARRAY[crc32($this->configSerial)][crc32('*')] as $key=>$value){
 				self::$oLogger->logDebug("crnrstn_environmentals :: initializing session[".session_id()."] with resource [*] receiving value [".$value."] for environmental key [".$tmp_envkey."].");
@@ -485,8 +485,8 @@ class crnrstn_environmentals {
 	public function returnSrvrRespStatus($errorCode){
 		
 		//
-		// http://php.net/manual/en/function.http-response-code.php
-		// Source: Wikipedia "List_of_HTTP_status_codes"
+		// Source: http://php.net/manual/en/function.http-response-code.php
+		// Source of source: Wikipedia "List_of_HTTP_status_codes"
 		$http_status_codes = array(100 => "Continue", 101 => "Switching Protocols", 102 => "Processing", 200 => "OK", 201 => "Created", 202 => "Accepted", 203 => "Non-Authoritative Information", 204 => "No Content", 205 => "Reset Content", 206 => "Partial Content", 207 => "Multi-Status", 300 => "Multiple Choices", 301 => "Moved Permanently", 302 => "Found", 303 => "See Other", 304 => "Not Modified", 305 => "Use Proxy", 306 => "(Unused)", 307 => "Temporary Redirect", 308 => "Permanent Redirect", 400 => "Bad Request", 401 => "Unauthorized", 402 => "Payment Required", 403 => "Forbidden", 404 => "Not Found", 405 => "Method Not Allowed", 406 => "Not Acceptable", 407 => "Proxy Authentication Required", 408 => "Request Timeout", 409 => "Conflict", 410 => "Gone", 411 => "Length Required", 412 => "Precondition Failed", 413 => "Request Entity Too Large", 414 => "Request-URI Too Long", 415 => "Unsupported Media Type", 416 => "Requested Range Not Satisfiable", 417 => "Expectation Failed", 418 => "I'm a teapot", 419 => "Authentication Timeout", 420 => "Enhance Your Calm", 422 => "Unprocessable Entity", 423 => "Locked", 424 => "Failed Dependency", 424 => "Method Failure", 425 => "Unordered Collection", 426 => "Upgrade Required", 428 => "Precondition Required", 429 => "Too Many Requests", 431 => "Request Header Fields Too Large", 444 => "No Response", 449 => "Retry With", 450 => "Blocked by Windows Parental Controls", 451 => "Unavailable For Legal Reasons", 494 => "Request Header Too Large", 495 => "Cert Error", 496 => "No Cert", 497 => "HTTP to HTTPS", 499 => "Client Closed Request", 500 => "Internal Server Error", 501 => "Not Implemented", 502 => "Bad Gateway", 503 => "Service Unavailable", 504 => "Gateway Timeout", 505 => "HTTP Version Not Supported", 506 => "Variant Also Negotiates", 507 => "Insufficient Storage", 508 => "Loop Detected", 509 => "Bandwidth Limit Exceeded", 510 => "Not Extended", 511 => "Network Authentication Required", 598 => "Network read timeout error", 599 => "Network connect timeout error");
 		
 		header('HTTP/1.1 '.$errorCode.' '.$http_status_codes[$errorCode]);
@@ -522,7 +522,6 @@ background-color:#555555;}
 		
 		exit();
 	}
-	
 	
 	public function getEnvParam($paramName){
 		

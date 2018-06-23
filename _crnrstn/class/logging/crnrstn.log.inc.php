@@ -72,7 +72,6 @@ class crnrstn_logging {
 			self::$debugMode = (int) $debugMode;
 		}
 	}
-	
 					
 	public function captureNotice($logSource, $logPriority, $msg){
 		$tmp_key = $_SESSION['CRNRSTN_'.crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]['CRNRSTN_RESOURCE_KEY'];

@@ -74,11 +74,12 @@ class crnrstn {
 
 	public $debugMode;	
 
-	public function __construct($serial,$debugMode=0) {			
+	public function __construct($serial,$debugMode=0) {		
+
+		$this->debugMode = $debugMode;
 				
 		//
 		// INSTANTIATE LOGGER
-		$this->debugMode = $debugMode;
 		self::$oLogger = new crnrstn_logging($this->debugMode);
 		
 		try{
@@ -92,18 +93,17 @@ class crnrstn {
 			}else{	
 				
 				//
-				// STORE LOCAL COPY OF SUPER GLOBAL ARRAY WITH SERVER DATA TO SUPPORT ENVIRONMENTAL DETECTION
+				// STORE LOCAL COPY OF SUPER GLOBAL ARRAY WITH SERVER DATA TO SUPPORT ENVIRONMENTAL DETECTION. I GUESS I COULD JUST WORK WITH $_SERVER DIRECTLY...IF WE'RE TRYNG TO SHAVE GRAMS. WHAT DO YOU THINK?
 				self::$handle_srvr_ARRAY=$_SERVER;
 				
 				//
-				// STORE CONFIG SERIAL KEY AND INITIALIZE MATCH COUNT.
+				// STORE CONFIG SERIAL KEY AND INITIALIZE MATCH COUNT
 				$this->configSerial = $serial;
 				$this->configMatchCount[crc32($serial)] = 0;
 				
 				//
-				// IF EARLY ENV DETECTION DURING defineEnvResource() DUE TO SPECIFIED requiredDetectionMatches(), STORE HERE: 
+				// IF EARLY ENV DETECTION DURING defineEnvResource() DUE TO SPECIFIED requiredDetectionMatches(), STORE ENV HERE: 
 				self::$serverAppKey[crc32($this->configSerial)] = "";
-
 						
 				//
 				// INITIALIZE DATABASE CONNECTION MANAGER.
@@ -319,7 +319,7 @@ class crnrstn {
 		if(self::$env_detect_ARRAY[$configSerial][$env] >= self::$envDetectRequiredCnt && self::$envDetectRequiredCnt>0){
 			
 			//
-			// WE HAVE A ENVIRONMENTAL DEFINITION WITH A SUFFICIENT NUMBER OF SUCCESSFUL MATCHES TO THE RUNNING ENVIRONMENT 
+			// WE HAVE AN ENVIRONMENTAL DEFINITION WITH A SUFFICIENT NUMBER OF SUCCESSFUL MATCHES TO THE RUNNING ENVIRONMENT 
 			// AS DEFINED BY THE CRNRSTN CONFIG FILE
 			self::$env_select_ARRAY[$configSerial] = $env;
 			self::$oLogger->logDebug("crnrstn :: environmental detection complete. CRNRSTN selected environmental profile [".$env."] running with CRNRSTN serialization of [".$configSerial."] and phpsession[".session_id()."].");
@@ -423,7 +423,7 @@ class crnrstn {
 			try{
 				
 				//
-				// WE SHOULD HAVE THIS VALUE BY NOW. IF NULL, HOOOSTON...VE HAF PROBLEM!. $_SERVER['SERVER_NAME']
+				// WE SHOULD HAVE THIS VALUE BY NOW. IF EMPTY, HOOOSTON...VE HAF PROBLEM!
 				if(self::$serverAppKey[crc32($this->configSerial)] == ""){
 					self::$oLogger->logDebug("crnrstn :: ERROR :: we have processed ALL defined environmental resources and were unable to detect running environment with CRNRSTN config serial [".$this->configSerial."].");
 					throw new Exception('CRNRSTN initialization error :: Environmental detection failed to match a sufficient number of parameters (apparently, finding '.self::$envDetectRequiredCnt.' $_SERVER matches was too hard) to your servers configuration to successfully initialize CRNRSTN on server '.self::$handle_srvr_ARRAY['SERVER_NAME'].' ('.self::$handle_srvr_ARRAY['SERVER_ADDR'].')');
@@ -468,7 +468,7 @@ class crnrstn {
 	public function debugTransfer($currDebugStr){
 		
 		//
-		// DUE TO THE IMMINENT DELETION OF ENV...MOVE DEBUG OUTPUT HERE TO PERSIST
+		// DUE TO THE IMMINENT DELETION OF CRNRSTN_ENV...MOVE DEBUG OUTPUT HERE TO PERSIST
 		self::$oLogger->transferDebug($currDebugStr);
 			
 	}

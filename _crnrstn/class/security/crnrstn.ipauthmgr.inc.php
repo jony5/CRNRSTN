@@ -95,7 +95,6 @@ class crnrstn_ip_auth_manager {
 	public function grantAccessWKey($env, $ip){
 		# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1');
 		# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.*');
-		# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.');
 		# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1, 127.*, 128.0.4.50-128.0.4.60, 129.*-130.50.*, 130.51.10.*');
 		#
 		# IPV4
@@ -1219,7 +1218,7 @@ class crnrstn_ip_auth_manager {
 		if(!isset($tnp_endState)){ $tmp_endState = 0; }
 		
 		//
-		// IF EXCLUSIVES EXIST FOR PROCESSING, DEFAULT RESPONSE IS FALSE
+		// IF EXCLUSIVES EXIST FOR PROCESSING, DEFAULT RESPONSE IS FALSE (tmp_endState initialized with 1)
 		switch($tmp_endState){
 			case 1:
 				return false;
