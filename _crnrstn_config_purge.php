@@ -76,6 +76,7 @@ session_regenerate_id(true);
 								foreach($data2 as $key3=>$data3){
 									if($key3=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data3="XxXxXxXxXxXxX"; }
 									if($key3=="_CRNRSTN_COOKIE_ENCRYPT_SECRET_KEY"){ $data3="XxXxXxXxXxXxX"; }
+									if($key3=="_CRNRSTN_LOG_ENDPOINT"){ $data3="XxXxXxXxXxXxX"; }
 									echo '<div class="server_param">'.$key3." = ".$data3."</div>";
 								}
 							}else{
