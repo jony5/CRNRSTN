@@ -398,7 +398,7 @@ if($oCRNRSTN_ENV->debugMode>0){
 	?>
 	</div>
 </div>
-<div id="ftr_cw">&copy; 2012-<?php echo date(Y); ?> Jonathan 'J5' Harris :: All Rights Reserved.</div>  
+<div id="ftr_cw">&copy; 2012-<?php echo date("Y"); ?> Jonathan 'J5' Harris :: All Rights Reserved.</div>  
 
 </body>
 </html>
