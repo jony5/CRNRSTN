@@ -106,23 +106,24 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	# INITIALIZE LOGGING PROFILE FOR EACH ENVIRONMENT.
 	# $oCRNRSTN->initLogging([environment-key], [logging-constant], [additional-logging-detail]);
 	#
-	# where [logging-constant] = "DEFAULT", "SCREEN", "EMAIL" or "FILE"
+	# where [logging-constant] = "DEFAULT", "SCREEN", "EMAIL" or "FILE". NULL is DEFAULT.
 	
 	# e.g. LOGGING TO SCREEN
-	# $oCRNRSTN->initLogging('000WEBHOSTJONY5', 'SCREEN');
+	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'SCREEN');
 	
 	# e.g. LOGGING TO EMAIL
-	# $oCRNRSTN->initLogging('000WEBHOSTJONY5', 'EMAIL', 'email_one@address.com, email_two@address.com, email_n@address.com');
+	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'EMAIL', 'email_one@address.com, email_two@address.com, email_n@address.com');
 	
 	# e.g. LOGGING TO FILE (SYSTEM DEFAULT or CUSTOM)
-	# $oCRNRSTN->initLogging('000WEBHOSTJONY5', 'DEFAULT');								// SYSTEM DEFAULT FILE LOGGING
-	# $oCRNRSTN->initLogging('000WEBHOSTJONY5', 'FILE', '/var/logFolder/log.txt');		// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
+	# $oCRNRSTN->initLogging('CYEXX_JONY5');										// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'DEFAULT');								// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'FILE', '/var/logFolder/log.txt');		// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
 	
 	$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email_one@address.com');						// EMAIL LOG INFO
 	$oCRNRSTN->initLogging('LOCALHOST_PC', 'SCREEN');												// OUTPUT LOG INFO TO SCREEN
 	# $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
 	# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');				// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
-	$oCRNRSTN->initLogging('LOCALHOST_MAC', 'SCREEN');		// SYSTEM DEFAULT ERROR LOGGING
+	$oCRNRSTN->initLogging('LOCALHOST_MAC', 'DEFAULT');									// SYSTEM DEFAULT ERROR LOGGING
 	
 	# # #
 	# INITIALIZE SECURITY PROTOCOLS FOR EXCLUSIVE RESOURCE ACCESS. 2 FORMATS.
