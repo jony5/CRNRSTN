@@ -100,6 +100,6 @@ session_regenerate_id(true);
         <div class="cb_10"></div>
         
         
-        <div id="ftr_cw">&copy; 2012-<?php echo date(Y); ?> Jonathan 'J5' Harris :: All Rights Reserved.</div> 
+        <div id="ftr_cw">&copy; 2012-<?php echo date("Y"); ?> Jonathan 'J5' Harris :: All Rights Reserved.</div> 
     </div>
 </div>
