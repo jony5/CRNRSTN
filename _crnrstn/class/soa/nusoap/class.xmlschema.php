@@ -51,7 +51,33 @@ class nusoap_xmlschema extends nusoap_base  {
 	* @param	string $namespaces namespaces defined in enclosing XML
 	* @access   public
 	*/
+	public function __construct($schema='',$xml='',$namespaces=array()){
+		parent::nusoap_base();
+		$this->debug('nusoap_xmlschema class instantiated, inside constructor');
+		// files
+		$this->schema = $schema;
+		$this->xml = $xml;
+
+		// namespaces
+		$this->enclosingNamespaces = $namespaces;
+		$this->namespaces = array_merge($this->namespaces, $namespaces);
+
+		// parse schema file
+		if($schema != ''){
+			$this->debug('initial schema file: '.$schema);
+			$this->parseFile($schema, 'schema');
+		}
+
+		// parse xml file
+		if($xml != ''){
+			$this->debug('initial xml file: '.$xml);
+			$this->parseFile($xml, 'xml');
+		}
+
+	}
+	
 	function nusoap_xmlschema($schema='',$xml='',$namespaces=array()){
+	#public function __construct($schema='',$xml='',$namespaces=array()){
 		parent::nusoap_base();
 		$this->debug('nusoap_xmlschema class instantiated, inside constructor');
 		// files

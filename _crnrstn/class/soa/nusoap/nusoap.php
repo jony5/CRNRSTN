@@ -222,7 +222,12 @@ class nusoap_base {
 	*
 	* @access	public
 	*/
+	public function __construct(){
+		$this->debugLevel = $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'];
+	}
+	
 	function nusoap_base() {
+	#public function __construct(){
 		$this->debugLevel = $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'];
 	}
 
@@ -1038,7 +1043,16 @@ class nusoap_fault extends nusoap_base {
     * @param string $faultstring human readable error message
     * @param mixed $faultdetail detail, typically a string or array of string
 	*/
+	public function __construct($faultcode,$faultactor='',$faultstring='',$faultdetail=''){
+		parent::nusoap_base();
+		$this->faultcode = $faultcode;
+		$this->faultactor = $faultactor;
+		$this->faultstring = $faultstring;
+		$this->faultdetail = $faultdetail;
+	}
+	
 	function nusoap_fault($faultcode,$faultactor='',$faultstring='',$faultdetail=''){
+	#public function __construct($faultcode,$faultactor='',$faultstring='',$faultdetail=''){
 		parent::nusoap_base();
 		$this->faultcode = $faultcode;
 		$this->faultactor = $faultactor;
@@ -1131,7 +1145,33 @@ class nusoap_xmlschema extends nusoap_base  {
 	* @param	string $namespaces namespaces defined in enclosing XML
 	* @access   public
 	*/
+	public function __construct($schema='',$xml='',$namespaces=array()){
+		parent::nusoap_base();
+		$this->debug('nusoap_xmlschema class instantiated, inside constructor');
+		// files
+		$this->schema = $schema;
+		$this->xml = $xml;
+
+		// namespaces
+		$this->enclosingNamespaces = $namespaces;
+		$this->namespaces = array_merge($this->namespaces, $namespaces);
+
+		// parse schema file
+		if($schema != ''){
+			$this->debug('initial schema file: '.$schema);
+			$this->parseFile($schema, 'schema');
+		}
+
+		// parse xml file
+		if($xml != ''){
+			$this->debug('initial xml file: '.$xml);
+			$this->parseFile($xml, 'xml');
+		}
+
+	}
+	
 	function nusoap_xmlschema($schema='',$xml='',$namespaces=array()){
+	#public function __construct($schema='',$xml='',$namespaces=array()){
 		parent::nusoap_base();
 		$this->debug('nusoap_xmlschema class instantiated, inside constructor');
 		// files
@@ -2119,7 +2159,19 @@ class soapval extends nusoap_base {
 	* @param	mixed $attributes associative array of attributes to add to element serialization
 	* @access   public
 	*/
+	public function __construct($name='soapval',$type=false,$value=-1,$element_ns=false,$type_ns=false,$attributes=false) {
+		parent::nusoap_base();
+		$this->name = $name;
+		$this->type = $type;
+		$this->value = $value;
+		$this->element_ns = $element_ns;
+		$this->type_ns = $type_ns;
+		$this->attributes = $attributes;
+    }
+	
+	
   	function soapval($name='soapval',$type=false,$value=-1,$element_ns=false,$type_ns=false,$attributes=false) {
+	#public function __construct($name='soapval',$type=false,$value=-1,$element_ns=false,$type_ns=false,$attributes=false) {
 		parent::nusoap_base();
 		$this->name = $name;
 		$this->type = $type;
@@ -2211,7 +2263,22 @@ class soap_transport_http extends nusoap_base {
 	* @param boolean $use_curl Whether to try to force cURL use
 	* @access public
 	*/
+	public function __construct($url, $curl_options = NULL, $use_curl = false){
+		parent::nusoap_base();
+		$this->debug("ctor url=$url use_curl=$use_curl curl_options:");
+		$this->appendDebug($this->varDump($curl_options));
+		$this->setURL($url);
+		if (is_array($curl_options)) {
+			$this->ch_options = $curl_options;
+		}
+		$this->use_curl = $use_curl;
+		preg_match('/\$Revisio' . 'n: ([^ ]+)/', $this->revision, $rev);
+		$this->setHeader('User-Agent', $this->title.'/'.$this->version.' ('.$rev[1].')');
+	}
+	
+	
 	function soap_transport_http($url, $curl_options = NULL, $use_curl = false){
+	#public function __construct($url, $curl_options = NULL, $use_curl = false){
 		parent::nusoap_base();
 		$this->debug("ctor url=$url use_curl=$use_curl curl_options:");
 		$this->appendDebug($this->varDump($curl_options));
@@ -3628,7 +3695,66 @@ class nusoap_server extends nusoap_base {
     * @param mixed $wsdl file path or URL (string), or wsdl instance (object)
 	* @access   public
 	*/
+	public function __construct($wsdl=false){
+		parent::nusoap_base();
+		// turn on debugging?
+		global $debug;
+		global $HTTP_SERVER_VARS;
+
+		if (isset($_SERVER)) {
+			$this->debug("_SERVER is defined:");
+			$this->appendDebug($this->varDump($_SERVER));
+		} elseif (isset($HTTP_SERVER_VARS)) {
+			$this->debug("HTTP_SERVER_VARS is defined:");
+			$this->appendDebug($this->varDump($HTTP_SERVER_VARS));
+		} else {
+			$this->debug("Neither _SERVER nor HTTP_SERVER_VARS is defined.");
+		}
+
+		if (isset($debug)) {
+			$this->debug("In nusoap_server, set debug_flag=$debug based on global flag");
+			$this->debug_flag = $debug;
+		} elseif (isset($_SERVER['QUERY_STRING'])) {
+			$qs = explode('&', $_SERVER['QUERY_STRING']);
+			foreach ($qs as $v) {
+				if (substr($v, 0, 6) == 'debug=') {
+					$this->debug("In nusoap_server, set debug_flag=" . substr($v, 6) . " based on query string #1");
+					$this->debug_flag = substr($v, 6);
+				}
+			}
+		} elseif (isset($HTTP_SERVER_VARS['QUERY_STRING'])) {
+			$qs = explode('&', $HTTP_SERVER_VARS['QUERY_STRING']);
+			foreach ($qs as $v) {
+				if (substr($v, 0, 6) == 'debug=') {
+					$this->debug("In nusoap_server, set debug_flag=" . substr($v, 6) . " based on query string #2");
+					$this->debug_flag = substr($v, 6);
+				}
+			}
+		}
+
+		// wsdl
+		if($wsdl){
+			$this->debug("In nusoap_server, WSDL is specified");
+			if (is_object($wsdl) && (get_class($wsdl) == 'wsdl')) {
+				$this->wsdl = $wsdl;
+				$this->externalWSDLURL = $this->wsdl->wsdl;
+				$this->debug('Use existing wsdl instance from ' . $this->externalWSDLURL);
+			} else {
+				$this->debug('Create wsdl from ' . $wsdl);
+				$this->wsdl = new wsdl($wsdl);
+				$this->externalWSDLURL = $wsdl;
+			}
+			$this->appendDebug($this->wsdl->getDebug());
+			$this->wsdl->clearDebug();
+			if($err = $this->wsdl->getError()){
+				die('WSDL ERROR: '.$err);
+			}
+		}
+	}
+	
+	
 	function nusoap_server($wsdl=false){
+	#public function __construct($wsdl=false){
 		parent::nusoap_base();
 		// turn on debugging?
 		global $debug;
@@ -4651,7 +4777,23 @@ class wsdl extends nusoap_base {
 	 * @param boolean $use_curl try to use cURL
      * @access public 
      */
+	 public function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
+		parent::nusoap_base();
+		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
+        $this->proxyhost = $proxyhost;
+        $this->proxyport = $proxyport;
+		$this->proxyusername = $proxyusername;
+		$this->proxypassword = $proxypassword;
+		$this->timeout = $timeout;
+		$this->response_timeout = $response_timeout;
+		if (is_array($curl_options))
+			$this->curl_options = $curl_options;
+		$this->use_curl = $use_curl;
+		$this->fetchWSDL($wsdl);
+    }
+	
     function wsdl($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
+	#public function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
 		parent::nusoap_base();
 		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
         $this->proxyhost = $proxyhost;
@@ -6589,7 +6731,94 @@ class nusoap_parser extends nusoap_base {
 	* @param    string $decode_utf8 whether to decode UTF-8 to ISO-8859-1
 	* @access   public
 	*/
+	public function __construct($xml,$encoding='UTF-8',$method='',$decode_utf8=true){
+		parent::nusoap_base();
+		$this->xml = $xml;
+		$this->xml_encoding = $encoding;
+		$this->method = $method;
+		$this->decode_utf8 = $decode_utf8;
+
+		// Check whether content has been read.
+		if(!empty($xml)){
+			// Check XML encoding
+			$pos_xml = strpos($xml, '<?xml');
+			if ($pos_xml !== FALSE) {
+				$xml_decl = substr($xml, $pos_xml, strpos($xml, '?>', $pos_xml + 2) - $pos_xml + 1);
+				if (preg_match("/encoding=[\"']([^\"']*)[\"']/", $xml_decl, $res)) {
+					$xml_encoding = $res[1];
+					if (strtoupper($xml_encoding) != $encoding) {
+						$err = "Charset from HTTP Content-Type '" . $encoding . "' does not match encoding from XML declaration '" . $xml_encoding . "'";
+						$this->debug($err);
+						if ($encoding != 'ISO-8859-1' || strtoupper($xml_encoding) != 'UTF-8') {
+							$this->setError($err);
+							return;
+						}
+						// when HTTP says ISO-8859-1 (the default) and XML says UTF-8 (the typical), assume the other endpoint is just sloppy and proceed
+					} else {
+						$this->debug('Charset from HTTP Content-Type matches encoding from XML declaration');
+					}
+				} else {
+					$this->debug('No encoding specified in XML declaration');
+				}
+			} else {
+				$this->debug('No XML declaration');
+			}
+			$this->debug('Entering nusoap_parser(), length='.strlen($xml).', encoding='.$encoding);
+			// Create an XML parser - why not xml_parser_create_ns?
+			$this->parser = xml_parser_create($this->xml_encoding);
+			// Set the options for parsing the XML data.
+			//xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
+			xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
+			xml_parser_set_option($this->parser, XML_OPTION_TARGET_ENCODING, $this->xml_encoding);
+			// Set the object for the parser.
+			xml_set_object($this->parser, $this);
+			// Set the element handlers for the parser.
+			xml_set_element_handler($this->parser, 'start_element','end_element');
+			xml_set_character_data_handler($this->parser,'character_data');
+
+			// Parse the XML file.
+			if(!xml_parse($this->parser,$xml,true)){
+			    // Display an error message.
+			    $err = sprintf('XML error parsing SOAP payload on line %d: %s',
+			    xml_get_current_line_number($this->parser),
+			    xml_error_string(xml_get_error_code($this->parser)));
+				$this->debug($err);
+				$this->debug("XML payload:\n" . $xml);
+				$this->setError($err);
+			} else {
+				$this->debug('in nusoap_parser ctor, message:');
+				$this->appendDebug($this->varDump($this->message));
+				$this->debug('parsed successfully, found root struct: '.$this->root_struct.' of name '.$this->root_struct_name);
+				// get final value
+				$this->soapresponse = $this->message[$this->root_struct]['result'];
+				// get header value
+				if($this->root_header != '' && isset($this->message[$this->root_header]['result'])){
+					$this->soapheader = $this->message[$this->root_header]['result'];
+				}
+				// resolve hrefs/ids
+				if(sizeof($this->multirefs) > 0){
+					foreach($this->multirefs as $id => $hrefs){
+						$this->debug('resolving multirefs for id: '.$id);
+						$idVal = $this->buildVal($this->ids[$id]);
+						if (is_array($idVal) && isset($idVal['!id'])) {
+							unset($idVal['!id']);
+						}
+						foreach($hrefs as $refPos => $ref){
+							$this->debug('resolving href at pos '.$refPos);
+							$this->multirefs[$id][$refPos] = $idVal;
+						}
+					}
+				}
+			}
+			xml_parser_free($this->parser);
+		} else {
+			$this->debug('xml was empty, didn\'t parse!');
+			$this->setError('xml was empty, didn\'t parse!');
+		}
+	}
+	
 	function nusoap_parser($xml,$encoding='UTF-8',$method='',$decode_utf8=true){
+	#public function __construct($xml,$encoding='UTF-8',$method='',$decode_utf8=true){
 		parent::nusoap_base();
 		$this->xml = $xml;
 		$this->xml_encoding = $encoding;
@@ -7267,7 +7496,42 @@ class nusoap_client extends nusoap_base  {
 	* @param	string $portName optional portName in WSDL document
 	* @access   public
 	*/
+	public function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
+		parent::nusoap_base();
+		$this->endpoint = $endpoint;
+		$this->proxyhost = $proxyhost;
+		$this->proxyport = $proxyport;
+		$this->proxyusername = $proxyusername;
+		$this->proxypassword = $proxypassword;
+		$this->timeout = $timeout;
+		$this->response_timeout = $response_timeout;
+		$this->portName = $portName;
+
+		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
+		$this->appendDebug('endpoint=' . $this->varDump($endpoint));
+
+		// make values
+		if($wsdl){
+			if (is_object($endpoint) && (get_class($endpoint) == 'wsdl')) {
+				$this->wsdl = $endpoint;
+				$this->endpoint = $this->wsdl->wsdl;
+				$this->wsdlFile = $this->endpoint;
+				$this->debug('existing wsdl instance created from ' . $this->endpoint);
+				$this->checkWSDL();
+			} else {
+				$this->wsdlFile = $this->endpoint;
+				$this->wsdl = null;
+				$this->debug('will use lazy evaluation of wsdl from ' . $this->endpoint);
+			}
+			$this->endpointType = 'wsdl';
+		} else {
+			$this->debug("instantiate SOAP with endpoint at $endpoint");
+			$this->endpointType = 'soap';
+		}
+	}
+	
 	function nusoap_client($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
+	#public function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
 		parent::nusoap_base();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;

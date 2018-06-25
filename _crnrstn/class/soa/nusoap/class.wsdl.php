@@ -69,7 +69,23 @@ class wsdl extends nusoap_base {
 	 * @param boolean $use_curl try to use cURL
      * @access public 
      */
-    function wsdl($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
+    public function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
+		parent::nusoap_base();
+		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
+        $this->proxyhost = $proxyhost;
+        $this->proxyport = $proxyport;
+		$this->proxyusername = $proxyusername;
+		$this->proxypassword = $proxypassword;
+		$this->timeout = $timeout;
+		$this->response_timeout = $response_timeout;
+		if (is_array($curl_options))
+			$this->curl_options = $curl_options;
+		$this->use_curl = $use_curl;
+		$this->fetchWSDL($wsdl);
+    }
+	
+	function wsdl($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
+	#public function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
 		parent::nusoap_base();
 		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
         $this->proxyhost = $proxyhost;

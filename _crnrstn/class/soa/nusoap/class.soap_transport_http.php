@@ -57,7 +57,21 @@ class soap_transport_http extends nusoap_base {
 	* @param boolean $use_curl Whether to try to force cURL use
 	* @access public
 	*/
+	public function __construct($url, $curl_options = NULL, $use_curl = false){
+		parent::nusoap_base();
+		$this->debug("ctor url=$url use_curl=$use_curl curl_options:");
+		$this->appendDebug($this->varDump($curl_options));
+		$this->setURL($url);
+		if (is_array($curl_options)) {
+			$this->ch_options = $curl_options;
+		}
+		$this->use_curl = $use_curl;
+		preg_match('/\$Revisio' . 'n: ([^ ]+)/', $this->revision, $rev);
+		$this->setHeader('User-Agent', $this->title.'/'.$this->version.' ('.$rev[1].')');
+	}
+	
 	function soap_transport_http($url, $curl_options = NULL, $use_curl = false){
+	#public function __construct($url, $curl_options = NULL, $use_curl = false){
 		parent::nusoap_base();
 		$this->debug("ctor url=$url use_curl=$use_curl curl_options:");
 		$this->appendDebug($this->varDump($curl_options));

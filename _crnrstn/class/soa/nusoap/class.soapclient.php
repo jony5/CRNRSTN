@@ -95,7 +95,42 @@ class nusoap_client extends nusoap_base  {
 	* @param	string $portName optional portName in WSDL document
 	* @access   public
 	*/
+	public function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
+		parent::nusoap_base();
+		$this->endpoint = $endpoint;
+		$this->proxyhost = $proxyhost;
+		$this->proxyport = $proxyport;
+		$this->proxyusername = $proxyusername;
+		$this->proxypassword = $proxypassword;
+		$this->timeout = $timeout;
+		$this->response_timeout = $response_timeout;
+		$this->portName = $portName;
+
+		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
+		$this->appendDebug('endpoint=' . $this->varDump($endpoint));
+
+		// make values
+		if($wsdl){
+			if (is_object($endpoint) && (get_class($endpoint) == 'wsdl')) {
+				$this->wsdl = $endpoint;
+				$this->endpoint = $this->wsdl->wsdl;
+				$this->wsdlFile = $this->endpoint;
+				$this->debug('existing wsdl instance created from ' . $this->endpoint);
+				$this->checkWSDL();
+			} else {
+				$this->wsdlFile = $this->endpoint;
+				$this->wsdl = null;
+				$this->debug('will use lazy evaluation of wsdl from ' . $this->endpoint);
+			}
+			$this->endpointType = 'wsdl';
+		} else {
+			$this->debug("instantiate SOAP with endpoint at $endpoint");
+			$this->endpointType = 'soap';
+		}
+	}
+	
 	function nusoap_client($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
+	#public function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
 		parent::nusoap_base();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;

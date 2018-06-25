@@ -170,7 +170,66 @@ class nusoap_server extends nusoap_base {
     * @param mixed $wsdl file path or URL (string), or wsdl instance (object)
 	* @access   public
 	*/
+	public function __construct($wsdl=false){
+		parent::nusoap_base();
+		// turn on debugging?
+		global $debug;
+		global $HTTP_SERVER_VARS;
+
+		if (isset($_SERVER)) {
+			$this->debug("_SERVER is defined:");
+			$this->appendDebug($this->varDump($_SERVER));
+		} elseif (isset($HTTP_SERVER_VARS)) {
+			$this->debug("HTTP_SERVER_VARS is defined:");
+			$this->appendDebug($this->varDump($HTTP_SERVER_VARS));
+		} else {
+			$this->debug("Neither _SERVER nor HTTP_SERVER_VARS is defined.");
+		}
+
+		if (isset($debug)) {
+			$this->debug("In nusoap_server, set debug_flag=$debug based on global flag");
+			$this->debug_flag = $debug;
+		} elseif (isset($_SERVER['QUERY_STRING'])) {
+			$qs = explode('&', $_SERVER['QUERY_STRING']);
+			foreach ($qs as $v) {
+				if (substr($v, 0, 6) == 'debug=') {
+					$this->debug("In nusoap_server, set debug_flag=" . substr($v, 6) . " based on query string #1");
+					$this->debug_flag = substr($v, 6);
+				}
+			}
+		} elseif (isset($HTTP_SERVER_VARS['QUERY_STRING'])) {
+			$qs = explode('&', $HTTP_SERVER_VARS['QUERY_STRING']);
+			foreach ($qs as $v) {
+				if (substr($v, 0, 6) == 'debug=') {
+					$this->debug("In nusoap_server, set debug_flag=" . substr($v, 6) . " based on query string #2");
+					$this->debug_flag = substr($v, 6);
+				}
+			}
+		}
+
+		// wsdl
+		if($wsdl){
+			$this->debug("In nusoap_server, WSDL is specified");
+			if (is_object($wsdl) && (get_class($wsdl) == 'wsdl')) {
+				$this->wsdl = $wsdl;
+				$this->externalWSDLURL = $this->wsdl->wsdl;
+				$this->debug('Use existing wsdl instance from ' . $this->externalWSDLURL);
+			} else {
+				$this->debug('Create wsdl from ' . $wsdl);
+				$this->wsdl = new wsdl($wsdl);
+				$this->externalWSDLURL = $wsdl;
+			}
+			$this->appendDebug($this->wsdl->getDebug());
+			$this->wsdl->clearDebug();
+			if($err = $this->wsdl->getError()){
+				die('WSDL ERROR: '.$err);
+			}
+		}
+	}
+
+
 	function nusoap_server($wsdl=false){
+	#public function __construct($wsdl=false){
 		parent::nusoap_base();
 		// turn on debugging?
 		global $debug;
