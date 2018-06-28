@@ -214,6 +214,7 @@ Message: '.$this->emailDataElements['msg'].'
 - - - - - - - - - - - - - - - - - - - - 
 
 Sending IP Address: '.$_SERVER['REMOTE_ADDR'].'
+System Timestamp: '.$this->getmicrotime().' 
 
 Please note that this information has not been saved anywhere.
 You may want to keep this email for your records.
