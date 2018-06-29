@@ -131,12 +131,11 @@ class crnrstn_logging {
 						
 							//
 							// ERROR SENDING EMAIL. LOG TO DEFAULT SYS.
-							error_log('Email send fail. Notice output dump-> Source: '.$this->emailDataElements['logSource'].'|| Priority: '.$this->emailDataElements['logPriority'].'|| Message: '.$this->emailDataElements['msg']);
+							error_log('Email send to '.$this->emailDataElements['addAddressEmail'].' :: FAIL. Email output dump-> Source: '.$this->emailDataElements['logSource'].'|| Priority: '.$this->emailDataElements['logPriority'].'|| Message: '.$this->emailDataElements['msg']);
 						break;
 						
 					}
 					
-					unset($emailDataElements);
 					unset($this->msg_delivery_status);
 					
 				}
@@ -202,10 +201,10 @@ class crnrstn_logging {
 	
 	private function buildSimpleMessage(){
 		
-		$this->emailDataElements['subject'] = 'CRNRSTN Suite :: Logging Notice Captured on '.$_SERVER['REMOTE_ADDR'];
-		$this->emailDataElements['text'] = 'This is a triggered Logging notification from the CRNRSTN Suite ::.
+		$this->emailDataElements['subject'] = 'CRNRSTN Suite :: logging notification captured on '.$_SERVER['SERVER_NAME'];
+		$this->emailDataElements['text'] = 'This is a triggered logging notification from the CRNRSTN Suite ::.
 
-Information about the notice:\r\n
+Information about this notice:
 - - - - - - - - - - - - - - - - - - - -
 Source: '.$this->emailDataElements['logSource'].'
 Priority: '.$this->emailDataElements['logPriority'].'
@@ -213,14 +212,20 @@ Message: '.$this->emailDataElements['msg'].'
 
 - - - - - - - - - - - - - - - - - - - - 
 
-Sending IP Address: '.$_SERVER['REMOTE_ADDR'].'
+Sending IP Address: '.$_SERVER['REMOTE_ADDR'].' ('.$_SERVER['SERVER_NAME'].')
 System Timestamp: '.$this->getmicrotime().' 
 
-Please note that this information has not been saved anywhere.
-You may want to keep this email for your records.
+Please note that this information has 
+not been saved anywhere. You may want 
+to keep this email for your records.
 
-Cheers!
-J5';
+This email was sent to '.$this->emailDataElements['addAddressEmail'].'. 
+If you wish to unsubscribe from future 
+emails, please contact the 
+website administrator.
+
+(c) 2012-'.date("Y").' Evifweb Development
+';
 			
 		$this->emailDataElements['headers']  = "From: System Notice < noreply@".$_SERVER['SERVER_NAME']." >\n";
 		$this->emailDataElements['headers'] .= "X-Sender: System Notice < noreply@".$_SERVER['SERVER_NAME']." >\n";

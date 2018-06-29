@@ -362,7 +362,7 @@ if($oCRNRSTN_ENV->debugMode>0){
 		// CRNRSTN MYSQLI CONNECTION MANAGER TO PROCESS QUERY AND RETURN DATABASE RESULT.
 		$mysqli = $oCRNRSTN_ENV->oMYSQLI_CONN_MGR->processMultiQuery($mysqli, $query);
 		if($mysqli->error){
-			throw new Exception('CRNRSTN unit test :: ERROR :: ['.$mysqli->error.']');
+			throw new Exception('CRNRSTN configuration debug :: MYSQLI ERROR :: ['.$mysqli->error.']');
 			
 		}else{
 			$ROWCNT=0;
@@ -392,7 +392,7 @@ if($oCRNRSTN_ENV->debugMode>0){
 			//
 			// CHECK FOR ANY ERROR IN SQL RESULT BEYOND FIRST QUERY IN MULTI-QUERY
 			if($mysqli->error){
-				throw new Exception('CRNRSTN configuration debug :: ERROR :: ['.$mysqli->error.']');
+				throw new Exception('CRNRSTN configuration debug :: MYSQLI ERROR :: ['.$mysqli->error.']');
 	
 			}
 		}
@@ -401,7 +401,7 @@ if($oCRNRSTN_ENV->debugMode>0){
 
 			//
 			// SEND THIS THROUGH THE LOGGER OBJECT
-			$oLogger->captureNotice('mysqli_conn_manager->processMultiQuery()', LOG_ERR, $e->getMessage());
+			$oLogger->captureNotice('CRNRSTN config debugger :: database configuration test', LOG_ERR, $e->getMessage());
 
 		}
 	
