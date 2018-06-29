@@ -221,10 +221,9 @@ to keep this email for your records.
 
 This email was sent to '.$this->emailDataElements['addAddressEmail'].'. 
 If you wish to unsubscribe from future 
-emails, please contact the 
+system notifications, please contact the 
 website administrator.
 
-(c) 2012-'.date("Y").' Evifweb Development
 ';
 			
 		$this->emailDataElements['headers']  = "From: System Notice < noreply@".$_SERVER['SERVER_NAME']." >\n";
