@@ -1,7 +1,31 @@
 <?php
-/* 
+/*
 // J5
 // Code is Poetry */
+#  CRNRSTN Suite :: An Open Source PHP Class Library to facilitate the operation of an application across multiple hosting environments.
+#  Copyright (C) 2012-2018 Evifweb Development
+#  VERSION :: 1.0.0
+#  RELEASE DATE :: July 4, 2018 Happy Independence Day from my dog and I to you...wherever and whenever you are.
+#  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
+#  URI :: http://crnrstn.evifweb.com/
+#  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 
+#			   environments (e.g. localhost, stage, preprod, and production). With this tool, data and functionality with 
+#			   characteristics that inherently create distinctions from one environment to the next...such as IP address restrictions, 
+#			   error logging profiles, and database authentication credentials...can all be managed through one framework for an entire 
+#			   application. Once CRNRSTN has been configured for your different hosting environments, seamlessly release a web 
+#			   application from one environment to the next without having to change your code-base to account for environmentally 
+#			   specific parameters; and manage this all from one place within the CRNRSTN Suite ::
+
+#  LICENSE :: This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public 
+#			  License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any 
+#			  later version.
+#
+#  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+#  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License along with this program. This license can also be downloaded from
+#  http://crnrstn.evifweb.com/license.txt.  If not, see <http://www.gnu.org/licenses/>
+
 require('_crnrstn.root.inc.php');
 //include_once($CRNRSTN_ROOT . '_crnrstn.config.inc.php');		// UNCOMMENT WHEN CRNRSTN IS CONFIGURED TO ENABLE FLUSH OF COOKIE DATA.
 
@@ -100,7 +124,7 @@ session_regenerate_id(true);
         </div>
         <div class="cb_10"></div>
         
-        
-        <div id="ftr_cw">&copy; 2012-<?php echo date("Y"); ?> Jonathan 'J5' Harris :: All Rights Reserved.</div> 
+        <!-- I DO NOT MIND IF THE FOLLOWING LINE IS REMOVED. THE GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version APPLIES TO THIS DOCUMENT. -->
+        <div id="ftr_cw">&copy; 2012-2018 Jonathan 'J5' Harris :: All Rights Reserved.</div> 
     </div>
 </div>

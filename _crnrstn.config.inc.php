@@ -7,17 +7,17 @@ if ( ! session_id() ) @ session_start();
 //
 // CRNRSTN CLASS INCLUDES ::
 require('./_crnrstn.root.inc.php');
-require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');				// CRNRSTN
-require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');				// LOGGING
+require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');						// CRNRSTN
+require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');					// LOGGING
 require($CRNRSTN_ROOT.'/_crnrstn/class/environmentals/crnrstn.env.inc.php');			// ENVIRONMENTALS
 require($CRNRSTN_ROOT.'/_crnrstn/class/security/crnrstn.ipauthmgr.inc.php');			// SECURITY
 require($CRNRSTN_ROOT.'/_crnrstn/class/database/mysqli/crnrstn.mysqli.inc.php');		// DATABASE
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');					// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');			// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');				// SOAP MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');			// SESSION MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');			// COOKIE MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');				// HTTP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');							// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');				// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');						// SOAP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');				// SESSION MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');				// COOKIE MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');					// HTTP MANAGEMENT
 
 
 //
@@ -123,7 +123,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->initLogging('LOCALHOST_PC', 'SCREEN');												// OUTPUT LOG INFO TO SCREEN
 	# $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
 	# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');		// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
-	$oCRNRSTN->initLogging('LOCALHOST_MAC');														// SYSTEM DEFAULT ERROR LOGGING
+	$oCRNRSTN->initLogging('LOCALHOST_MAC');														// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
 	
 	# # # {OPTIONAL} # # #
 	# INITIALIZE SECURITY PROTOCOLS FOR EXCLUSIVE RESOURCE ACCESS. THERE ARE 2 FORMATS.
@@ -166,7 +166,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	and compilation options used for OpenSSL in your machine(s). Run crnrstn_config_debug.php to see SERVER's available OpenSSL ciphers & hash algorithms.
 	$oCRNRSTN->initSessionEncryption([environment-key], [openssl-encryption-cipher], [openssl-encryption-key], [openssl-encryption-options], [hmac-algorithm]);
 	$oCRNRSTN->initSessionEncryption([environment-key] -> Specify one of your previously defined addEnvironment() environment keys , 
-									   [openssl-encryption-cipher] -> For a list of recommended and available openssl cipher methods...run $oCRNRSTN->openssl_get_cipher_methods(), 
+									   [openssl-encryption-cipher] -> For a list of recommended (and available) openssl cipher methods...run $oCRNRSTN_ENV->openssl_get_cipher_methods();
 									   [openssl-encryption-key] -> specify an encryption key to be used by the CRNRSTN encryption layer for encryptable session data, 
 									   [openssl-encryption-options] -> a bitwise disjunction of the flags OPENSSL_RAW_DATA and OPENSSL_ZERO_PADDING, 
 									   [hmac-algorithm] -> Specify the algorithm to be used by CRNRSTN when using the HMAC library to generate a keyed hash value. For a list 
@@ -177,9 +177,10 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	active clients to have session data that was encrypted with a "no-longer-in-production" encryption cipher or HMAC algorithm...and hence 
 	be unreadable to the application. Developer needs to take this into consideration and plan for use case where session data is 
 	unreadable...with graceful degradation or session reset.
-										
-	*/
 	
+	
+	$oCRNRSTN->initSessionEncryption([environment-key], [openssl-encryption-cipher], [openssl-encryption-key], [openssl-encryption-options], [hmac-algorithm]);
+	*/
 	$oCRNRSTN->initSessionEncryption('LOCALHOST_PC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
 	$oCRNRSTN->initSessionEncryption('LOCALHOST_MAC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
 	$oCRNRSTN->initSessionEncryption('BLUEHOST_2018', 'AES-256-CTR', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'ripemd256');
