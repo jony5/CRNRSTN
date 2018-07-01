@@ -653,10 +653,6 @@ class crnrstn_ip_auth_manager {
 		# 
 		
 		//
-		// ALREADY CHECKSUMMED SO DON'T NEED TO CHECKSUM THE ENV AGAIN
-		#$env = crc32($env);
-		
-		//
 		// STORE IPADDRESS(ES) INTO ARRAY. CHECK FOR COMMA DELIMITED LIST
 		if(sizeof(explode(",", $ip))>1){
 			
@@ -1171,14 +1167,22 @@ class crnrstn_ip_auth_manager {
 		
 		//
 		// IF NO IP AUTHORIZATION VALUES HAVE BEEN INITIALIZED...NOTHING TO DO HERE
+		if(!isset(self::$deniedIp_ARRAY[$env])){
+			self::$deniedIp_ARRAY[$env] = array();
+		}
+		
+		if(!isset(self::$allowedIp_ARRAY[$env])){
+			self::$allowedIp_ARRAY[$env] = array();
+		}
+		
 		if(sizeof(self::$deniedIp_ARRAY[$env])==0 && sizeof(self::$allowedIp_ARRAY[$env])==0){
 			
 			//
 			// STORE SUCCESSFUL IP ADDRESS AUTHORIZATION TO SESSION
 			$this->oSESSION_MGR->setSessionParam('CRNRSTN_ACCESS_AUTHORIZED', 1);
 			$this->oSESSION_MGR->setSessionParam('CRNRSTN_AUTHORIZED_IP', $ip);
-			$this->oSESSION_MGR->setSessionIp('SESSION_IP', $ip);
-
+			$this->oSESSION_MGR->setSessionIp('SESSION_IP', md5($ip));
+			
 			return true;
 		}
 			
@@ -1197,7 +1201,8 @@ class crnrstn_ip_auth_manager {
 						// STORE SUCCESSFUL IP ADDRESS AUTHORIZATION TO SESSION
 						$this->oSESSION_MGR->setSessionParam('CRNRSTN_ACCESS_AUTHORIZED', 1);
 						$this->oSESSION_MGR->setSessionParam('CRNRSTN_AUTHORIZED_IP', $ip);
-						$this->oSESSION_MGR->setSessionIp('SESSION_IP', $ip);
+						$this->oSESSION_MGR->setSessionIp('SESSION_IP', md5($ip));
+						
 						return true;
 					}
 				}
@@ -1207,15 +1212,15 @@ class crnrstn_ip_auth_manager {
 		//
 		// PROCESS DENIALS
 		if(isset(self::$deniedIp_ARRAY[$env])){
-		foreach (self::$deniedIp_ARRAY[$env] as $pos=>$val) {
-			if(($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)>=self::$deniedIpRangeMIN_ARRAY[$env][$pos]) && ($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)<=self::$deniedIpRangeMAX_ARRAY[$env][$pos])){
-				
-				return false;
+			foreach (self::$deniedIp_ARRAY[$env] as $pos=>$val) {
+				if(($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)>=self::$deniedIpRangeMIN_ARRAY[$env][$pos]) && ($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)<=self::$deniedIpRangeMAX_ARRAY[$env][$pos])){
+					
+					return false;
+				}
 			}
 		}
-		}
 		
-		if(!isset($tnp_endState)){ $tmp_endState = 0; }
+		if(!isset($tmp_endState)){ $tmp_endState = 0; }
 		
 		//
 		// IF EXCLUSIVES EXIST FOR PROCESSING, DEFAULT RESPONSE IS FALSE (tmp_endState initialized with 1)

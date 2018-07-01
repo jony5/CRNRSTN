@@ -165,7 +165,7 @@ class crnrstn_logging {
 				
 			break;
 			default:
-				error_log(" :: ".'Source: '.$logSource.' || Priority: '.$tmp_priority.' || Message: '.$msg);
+				error_log(":: ".'Source: '.$logSource.' || Priority: '.$tmp_priority.' || Message: '.$msg);
 			break;
 		}
 		

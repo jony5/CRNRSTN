@@ -19,7 +19,6 @@ require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');				// 
 require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');				// COOKIE MANAGEMENT
 require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');					// HTTP MANAGEMENT
 
-
 //
 // SET DEBUG MODE [0=OFF, 1=ON]
 $CRNRSTN_debugMode = 1; 
@@ -69,7 +68,8 @@ The error level constants are always available as part of the PHP core.
 ; Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
 */
 
-# # # {REQUIRED} # # #
+# # # # # # # # # # # # # # # #
+# # # {REQUIRED SECTION} # # #
 # INITIALIZE A KEY + ERROR REPORTING FOR EACH APPLICATION DEV/HOSTING ENVIRONMENT ::
 # PARAMETER 1 [environment-key] = A KEY TO REPRESENT EACH ENVIRONMENT THAT WILL RUN THIS INSTANTIATION OF CRNRSTN
 # PARAMETER 2 [error-reporting-constants] = ERROR REPORTING PROFILE
@@ -78,9 +78,37 @@ The error level constants are always available as part of the PHP core.
 $oCRNRSTN->addEnvironment('LOCALHOST_PC', E_ALL & ~E_NOTICE & ~E_STRICT);
 $oCRNRSTN->addEnvironment('LOCALHOST_MAC', E_ALL);
 $oCRNRSTN->addEnvironment('BLUEHOST_2018', E_ALL & ~E_NOTICE & ~E_STRICT);
+# # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # 
 
-# # # {OPTIONAL} # # #
-# INITIALIZE DATABASE FUNCTIONALITY FOR EACH ENVIRONMENT. 2 WAYS TO USE THIS METHOD.
+# # # # # # # # # # # # # # # #
+# # # {OPTIONAL SECTION} # # #
+# INITIALIZE LOGGING PROFILE FOR EACH ENVIRONMENT.
+# $oCRNRSTN->initLogging([environment-key], [logging-constant], [additional-logging-detail]);
+#
+# where [logging-constant] = "DEFAULT", "SCREEN", "EMAIL" or "FILE". NULL is DEFAULT.
+
+# e.g. LOGGING TO SCREEN
+# $oCRNRSTN->initLogging('CYEXX_JONY5', 'SCREEN');
+
+# e.g. LOGGING TO EMAIL
+# $oCRNRSTN->initLogging('CYEXX_JONY5', 'EMAIL', 'email_one@address.com, email_two@address.com, email_n@address.com');
+
+# e.g. LOGGING TO FILE (SYSTEM DEFAULT or CUSTOM)
+# $oCRNRSTN->initLogging('CYEXX_JONY5');										// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+# $oCRNRSTN->initLogging('CYEXX_JONY5', 'DEFAULT');								// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+# $oCRNRSTN->initLogging('CYEXX_JONY5', 'FILE', '/var/logFolder/log.txt');		// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
+$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email1@domain.com,email2@domain.com');			// EMAIL LOG INFO. EMAIL WILL BE SENT FROM noreply@$_SERVER['SERVER_NAME']
+$oCRNRSTN->initLogging('LOCALHOST_PC', 'SCREEN');												// OUTPUT LOG INFO TO SCREEN
+# $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
+# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');		// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
+$oCRNRSTN->initLogging('LOCALHOST_MAC');														// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+# # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # 
+
+# # # # # # # # # # # # # # # #
+# # # {OPTIONAL SECTION} # # #
+# INITIALIZE DATABASE FUNCTIONALITY FOR EACH ENVIRONMENT. TWO (2) WAYS TO USE THIS METHOD.
 # FORMAT ONE (1) :: $oCRNRSTN->addDatabase([environment-key], [path-to-db-configuration-file]);
 $oCRNRSTN->addDatabase('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_wwwroot//xampp//htdocs//crnrstn//config.database.secure//_crnrstn.db.config.inc.php');
 // $oCRNRSTN->addDatabase('LOCALHOST_MAC', '/var/www/html/woodford/config.database.secure/_crnrstn.db.config.inc.php');
@@ -91,6 +119,41 @@ $oCRNRSTN->addDatabase('BLUEHOST_2018', '/home3/evifwebc/public_html/woodford.ev
 // $oCRNRSTN->addDatabase('LOCALHOST_MAC', 'mx.localhost.com', 'crnrstn_posts', '33333333333333', 'db_crnrstn_posts', 80);
 $oCRNRSTN->addDatabase('LOCALHOST_MAC', 'localhost', 'evifweb_stage', 'YxulqyJc8GfVUxwa', 'evifweb_stage','3306');
 // $oCRNRSTN->addDatabase('BLUEHOST_2018', 'mx.localhost.com', 'crnrstn_demo', '44444444444444', 'db_crnrstn_demo', 80);
+# # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # 
+
+# # # # # # # # # # # # # # # #
+# # # {OPTIONAL SECTION} # # #
+# INITIALIZE SECURITY PROTOCOLS FOR EXCLUSIVE RESOURCE ACCESS. THERE ARE TWO (2) FORMATS.
+# FORMAT 1. PASS IN ENVIRONMENT KEY AND PATH TO CONFIGURED CRNRSTN IP AUTHENTICATION MANAGER CONFIG FILE ON THE SERVER.
+# $oCRNRSTN->grantExclusiveAccess([environment-key], [path-to-db-configuration-file]);
+$oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_wwwroot//xampp//htdocs//crnrstn//config.ipauthmgr.secure//_crnrstn.ipauthmgr.config.inc.php');
+// $oCRNRSTN->grantExclusiveAccess('LOCALHOST_MAC', '/var/www/html/woodford/config.ipauthmgr.secure/grantexclusiveaccess/_crnrstn.ipauthmgr.config.inc.php');
+// $oCRNRSTN->grantExclusiveAccess('BLUEHOST_2018', '/home2/jony5/woodford.jony5.com/config.ipauthmgr.secure/grantexclusiveaccess/_crnrstn.ipauthmgr.config.inc.php');
+
+# FORMAT 2. PASS IN ENVIRONMENT KEY AND IP ADDRESS (OR COMMA DELIMITED LIST OF IPv4 or IPv6 (testing needed) IPs)
+# $oCRNRSTN->grantExclusiveAccess([environment-key], [comma-delimited-list-of-IPs]);
+# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_MAC','192.168.172.*,192.168.173.*,192.168.174.3,172.16.110.1');
+# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.*');
+# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1, 127.*, 130.51.10.*');
+$oCRNRSTN->grantExclusiveAccess('BLUEHOST_2018','127.0.0.1, 130.*, 130.51.10.*, FE80::230:80FF:FEF3:4701');
+# # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # 
+
+# # # # # # # # # # # # # # # #
+# # # {OPTIONAL SECTION} # # 
+# INITIALIZE SECURITY PROTOCOLS FOR RESOURCE DENIAL. THERE ARE TWO (2) FORMATS.
+# FORMAT 1. PASS IN ENVIRONMENT KEY AND PATH TO THE "DENY ACCESS" CONFIG FILE ON THE SERVER. (see /config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php)
+# $oCRNRSTN->denyAccess([environment-key], [path-to-ip-authorization-configuration-file]);
+// $oCRNRSTN->denyAccess('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_wwwroot//xampp//htdocs//jony5.com//_crnrstn//config.ipauthmgr.secure//_crnrstn.ipauthmgr.config.inc.php');
+# $oCRNRSTN->denyAccess('LOCALHOST_MAC', '/var/www/html/woodford/config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php');
+
+# FORMAT 2. PASS IN ENVIRONMENT KEY AND IP ADDRESS (OR COMMA DELIMITED LIST OF IPv4 or IPv6 (testing needed) IPs)
+# $oCRNRSTN->denyAccess('BLUEHOST_2018','172.16.110.1');
+# $oCRNRSTN->denyAccess('LOCALHOST_PC','172.16.110.*');
+$oCRNRSTN->denyAccess('LOCALHOST_MAC','127.0.0.10, 127.0.0.2, 127.0.0.3, 127.0.0.4, 127.0.0.5, 172.16.110.2');
+# # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # 
 
 //
 // SESSION OPTIMIZATION FOR ACCELERATION OF CRNRSTN CONFIGURATION
@@ -101,58 +164,9 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	// TRANSFER LOG DEBUG OUTPUT TO oCRNTSTN FROM oCRNRSTN_ENV FOR SAFE KEEPING FOR THE TIME BEING
 	$oCRNRSTN->debugTransfer($oCRNRSTN_ENV->getDebug());
 	unset($oCRNRSTN_ENV);
-	
-	# # # {OPTIONAL} # # #
-	# INITIALIZE LOGGING PROFILE FOR EACH ENVIRONMENT.
-	# $oCRNRSTN->initLogging([environment-key], [logging-constant], [additional-logging-detail]);
-	#
-	# where [logging-constant] = "DEFAULT", "SCREEN", "EMAIL" or "FILE". NULL is DEFAULT.
-	
-	# e.g. LOGGING TO SCREEN
-	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'SCREEN');
-	
-	# e.g. LOGGING TO EMAIL
-	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'EMAIL', 'email_one@address.com, email_two@address.com, email_n@address.com');
-	
-	# e.g. LOGGING TO FILE (SYSTEM DEFAULT or CUSTOM)
-	# $oCRNRSTN->initLogging('CYEXX_JONY5');										// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
-	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'DEFAULT');								// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
-	# $oCRNRSTN->initLogging('CYEXX_JONY5', 'FILE', '/var/logFolder/log.txt');		// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
-	
-	$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email1@domain.com,email2@domain.com');			// EMAIL LOG INFO
-	$oCRNRSTN->initLogging('LOCALHOST_PC', 'SCREEN');												// OUTPUT LOG INFO TO SCREEN
-	# $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
-	# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');		// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
-	$oCRNRSTN->initLogging('LOCALHOST_MAC');														// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
-	
-	# # # {OPTIONAL} # # #
-	# INITIALIZE SECURITY PROTOCOLS FOR EXCLUSIVE RESOURCE ACCESS. THERE ARE 2 FORMATS.
-	# FORMAT 1. PASS IN ENVIRONMENT KEY AND PATH TO CONFIGURED CRNRSTN IP AUTHENTICATION MANAGER CONFIG FILE ON THE SERVER.
-	# $oCRNRSTN->grantExclusiveAccess([environment-key], [path-to-db-configuration-file]);
-	$oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_wwwroot//xampp//htdocs//crnrstn//config.ipauthmgr.secure//_crnrstn.ipauthmgr.config.inc.php');
-	// $oCRNRSTN->grantExclusiveAccess('LOCALHOST_MAC', '/var/www/html/woodford/config.ipauthmgr.secure/grantexclusiveaccess/_crnrstn.ipauthmgr.config.inc.php');
-	// $oCRNRSTN->grantExclusiveAccess('BLUEHOST_2018', '/home2/jony5/woodford.jony5.com/config.ipauthmgr.secure/grantexclusiveaccess/_crnrstn.ipauthmgr.config.inc.php');
-	
-	# FORMAT 2. PASS IN ENVIRONMENT KEY AND IP ADDRESS (OR COMMA DELIMITED LIST OF IPv4 or IPv6 (testing needed) IPs)
-	# $oCRNRSTN->grantExclusiveAccess([environment-key], [comma-delimited-list-of-IPs]);
-	# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_MAC','192.168.172.*,192.168.173.*,192.168.174.3,172.16.110.1');
-	# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.*');
-	# $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1, 127.*, 130.51.10.*');
-	$oCRNRSTN->grantExclusiveAccess('BLUEHOST_2018','127.0.0.1, 130.*, 130.51.10.*, FE80::230:80FF:FEF3:4701');
-	
-	# # # {OPTIONAL} # # #
-	# INITIALIZE SECURITY PROTOCOLS FOR RESOURCE DENIAL. THERE ARE 2 FORMATS.
-	# FORMAT 1. PASS IN ENVIRONMENT KEY AND PATH TO THE "DENY ACCESS" CONFIG FILE ON THE SERVER. (see /config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php)
-	# $oCRNRSTN->denyAccess([environment-key], [path-to-ip-authorization-configuration-file]);
-	// $oCRNRSTN->denyAccess('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_wwwroot//xampp//htdocs//jony5.com//_crnrstn//config.ipauthmgr.secure//_crnrstn.ipauthmgr.config.inc.php');
-	# $oCRNRSTN->denyAccess('LOCALHOST_MAC', '/var/www/html/woodford/config.ipauthmgr.secure/denyaccess/_crnrstn.ipauthmgr.config.inc.php');
-	
-	# FORMAT 2. PASS IN ENVIRONMENT KEY AND IP ADDRESS (OR COMMA DELIMITED LIST OF IPv4 or IPv6 (testing needed) IPs)
-	# $oCRNRSTN->denyAccess('BLUEHOST_2018','172.16.110.1');
-	# $oCRNRSTN->denyAccess('LOCALHOST_PC','172.16.110.*');
-	$oCRNRSTN->denyAccess('LOCALHOST_MAC','127.0.0.10, 127.0.0.2, 127.0.0.3, 127.0.0.4, 127.0.0.5');
-	
-	# # # {OPTIONAL} # # #
+		
+	# # # # # # # # # # # # # # # #
+	# # # {OPTIONAL SECTION} # # #
 	# INITIALIZATION FOR ENCRYPTION :: CRNRSTN SESSION DATA :: ADVANCED CONFIGURATION PARAMETERS
 	/*
 	To configure any of your SERVER environments to hide select CRNRSTN configuration session data behind a layer of encryption, 
@@ -184,8 +198,11 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->initSessionEncryption('LOCALHOST_PC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
 	$oCRNRSTN->initSessionEncryption('LOCALHOST_MAC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
 	$oCRNRSTN->initSessionEncryption('BLUEHOST_2018', 'AES-256-CTR', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'ripemd256');
+	# # # # # # # # # # # # # # # 
+	# # # # # # # # # # # # # # # 
 	
-	# # # {OPTIONAL} # # #
+	# # # # # # # # # # # # # # # #
+	# # # {OPTIONAL SECTION} # # #
 	# INITIALIZATION FOR ENCRYPTION :: CRNRSTN COOKIE DATA :: ADVANCED CONFIGURATION PARAMETERS
 	/*
 	CAUTION :: Some hash_algos() returned methods will NOT be compatible with hash_hmac() which CRNRSTN uses in validating 
@@ -204,13 +221,18 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->initCookieEncryption('LOCALHOST_MAC', 'AES-256-CTR', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'ripemd256');
 	$oCRNRSTN->initCookieEncryption('LOCALHOST_PC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
 	$oCRNRSTN->initCookieEncryption('BLUEHOST_2018', 'AES-256-CTR', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'ripemd256');
+	# # # # # # # # # # # # # # # 
+	# # # # # # # # # # # # # # # 
 	
 	//
 	// TO ACHIEVE OPTIMIZATION AT FIRST RUNTIME, PASS AN APPROPRIATE INTEGER VALUE TO requiredDetectionMatches(). WHEN THAT QUANTITY OF PROVIDED $_SERVER PARAMETERS MATCH FOR ANY GIVEN 
-	// DEFINED ENVIRONMENT'S defineEnvResource() KEYS, THE RUNNING ENVIRONMENT WILL BE FLAGGED. FURTHER PROCESSING OF ANY REMAINING defineEnvResource() KEYS CAN BE STEAMLINED.
-	$oCRNRSTN->requiredDetectionMatches(5);
+	// DEFINED ENVIRONMENT'S defineEnvResource() KEYS, THE RUNNING ENVIRONMENT WILL BE FLAGGED. FURTHER PROCESSING OF ANY REMAINING defineEnvResource() KEYS CAN BE STREAMLINED.
+	#$CRNRSTN_minServerMatchCnt = NULL;		// PASS NULL TO ENABLE AUTO-DETECT OF ENVIRONMENT BASED UPON STRONGEST $_SERVER[] CORRELATION. NULL IS A LITTLE SLOWER (THAN SPECIFYING AN INTEGER) ON FIRST LOAD.
+	$CRNRSTN_minServerMatchCnt = 5;			// HOW MANY SERVER KEYS WILL YOU DEFINE (BELOW) FOR EACH ENVIRONMENT TO SUPPORT CRNRSTN ENVIRONMENTAL DETECTION?
+	$oCRNRSTN->requiredDetectionMatches($CRNRSTN_minServerMatchCnt);
 
-	# # #
+	# # # # # # # # # # # # # # # #
+	# # # {REQUIRED SECTION} # # #
 	# FOR EACH ENVIRONMENT, DEFINE SERVER[] KEYS FOR DETECTION + ADD ANY CUSTOM KEYS/VALUES OF YOUR OWN
 	#
 	# HERE ARE EXAMPLES OF SOME CORE/RESERVED SERVER SUPER GLOBAL PARAMETERS
@@ -229,7 +251,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'SERVER_ADDR', '50.87.249.11');
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'SERVER_PORT', '80');
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'SERVER_PROTOCOL', 'HTTP/1.1');
-	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'DOCUMENT_ROOT', '/home3/evifwebc/public_html/woodford.evifweb');
+	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'DOCUMENT_ROOT', '/home3/evifwebc/public_html/woodford.evifweb');		# VALUE FOR YOUR SERVER['DOCUMENT_ROOT']
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'DOCUMENT_ROOT_DIR', '');
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'ROOT_PATH_CLIENT_HTTP', 'http://woodford.evifweb.com/');
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'ROOT_PATH_CLIENT_HTTP_DIR', '');
@@ -238,7 +260,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'PWD_RESET_LINK_EXPIRE', 'INTERVAL 30 MINUTE');
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'SYSTEM_MSG_FROM_EMAIL', 'jharris@evifweb.com');
 	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'SYSTEM_MSG_FROM_NAME', 'Jonathan J5 Harris');
-	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'WSDL_URI', 'http://services.crnrstn.jony5.com/soa/crnrstn/1.0.0/wsdl/index.php?wsdl');	# WSDL_URI REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING SOAP CLIENT
+	$oCRNRSTN->defineEnvResource('BLUEHOST_2018', 'WSDL_URI', 'http://services.crnrstn.jony5.com/soa/crnrstn/1.0.0/wsdl/index.php?wsdl');	# KEY "WSDL_URI" (TO YOUR ENDPOINT) REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING CRNRSTN SOAP CLIENT MANAGER
 
 	//
 	// BEGIN RESOURCE DEFINITIONS FOR NEXT ENVIRONMENT
@@ -246,7 +268,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'SERVER_ADDR', '172.16.110.134');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'SERVER_PORT', '80');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'SERVER_PROTOCOL', 'HTTP/1.1');
-	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'DOCUMENT_ROOT', '/var/www/html'); # VALUE FOR YOUR SERVER['DOCUMENT_ROOT']
+	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'DOCUMENT_ROOT', '/var/www/html'); 		# VALUE FOR YOUR SERVER['DOCUMENT_ROOT']
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'DOCUMENT_ROOT_DIR', '/woodford');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'ROOT_PATH_CLIENT_HTTP', 'http://172.16.110.134/');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'ROOT_PATH_CLIENT_HTTP_DIR', 'woodford/');
@@ -255,7 +277,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'PWD_RESET_LINK_EXPIRE', 'INTERVAL 30 MINUTE');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'SYSTEM_MSG_FROM_EMAIL', 'jharris@evifweb.com');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'SYSTEM_MSG_FROM_NAME', 'Jonathan J5 Harris');
-	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'WSDL_URI', 'http://172.16.110.134/services/soa/crnrstn/1.0.0/wsdl/index.php?wsdl');	# WSDL_URI REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING SOAP CLIENT
+	$oCRNRSTN->defineEnvResource('LOCALHOST_MAC', 'WSDL_URI', 'http://172.16.110.134/services/soa/crnrstn/1.0.0/wsdl/index.php?wsdl');	# KEY "WSDL_URI" (TO YOUR ENDPOINT) REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING CRNRSTN SOAP CLIENT MANAGER
 
 	//
 	// BEGIN RESOURCE DEFINITIONS FOR NEXT ENVIRONMENT
@@ -272,15 +294,17 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	$oCRNRSTN->defineEnvResource('LOCALHOST_PC', 'PWD_RESET_LINK_EXPIRE', 'INTERVAL 30 MINUTE');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_PC', 'SYSTEM_MSG_FROM_EMAIL', 'jharris@evifweb.com');
 	$oCRNRSTN->defineEnvResource('LOCALHOST_PC', 'SYSTEM_MSG_FROM_NAME', 'Jonathan J5 Harris');
-	$oCRNRSTN->defineEnvResource('LOCALHOST_PC', 'WSDL_URI', 'http://127.0.0.1/services/soa/crnrstn/1.0.0/wsdl/index.php?wsdl');	# WSDL_URI REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING SOAP CLIENT
+	$oCRNRSTN->defineEnvResource('LOCALHOST_PC', 'WSDL_URI', 'http://127.0.0.1/services/soa/crnrstn/1.0.0/wsdl/index.php?wsdl');	# KEY "WSDL_URI" (TO YOUR ENDPOINT) REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING CRNRSTN SOAP CLIENT MANAGER
 	
 	//
 	// RESOURCES DEFINED FOR ALL ENVIRONMENTS :: AS DESIGNATED BY PASSING '*' AS ENV KEY PARAMETER
-	$oCRNRSTN->defineEnvResource('*','WSDL_CACHE_TTL','80');	# WSDL_CACHE_TTL REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING SOAP CLIENT
-	$oCRNRSTN->defineEnvResource('*','NUSOAP_USECURL', true);	# NUSOAP_USECURL REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING SOAP CLIENT
+	$oCRNRSTN->defineEnvResource('*','WSDL_CACHE_TTL','80');	# WSDL_CACHE_TTL REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING CRNRSTN SOAP CLIENT MANAGER
+	$oCRNRSTN->defineEnvResource('*','NUSOAP_USECURL', true);	# NUSOAP_USECURL REQUIRED BY CRNRSTN SOAP CLIENT CONNECTION MANAGER IF USING CRNRSTN SOAP CLIENT MANAGER
 	$oCRNRSTN->defineEnvResource('*','SEARCHPAGE_INDEXSIZE','15');
 	$oCRNRSTN->defineEnvResource('*','USERPROFILE_EXTERNALURI','3');
 	$oCRNRSTN->defineEnvResource('*','AUTOSUGGEST_RESULT_MAX','10');
+	# # # # # # # # # # # # # # # #
+	# # # # # # # # # # # # # # # #
 	
 	//
 	// INSTANTIATE ENVIRONMENTAL CLASS BASED ON ABOVE DEFINED CRNRSTN CONFIGURATION 

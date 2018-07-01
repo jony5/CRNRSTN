@@ -60,7 +60,7 @@ class crnrstn_environmentals {
 		// ROLL OVER DEBUG TRACE FROM CRNRSTN OBJECT AND THEN CONTINUE TO APPEND
 		$this->debugMode = $oCRNRSTN->getDebugMode();
 		self::$oLogger = new crnrstn_logging($this->debugMode);
-		
+				
 		self::$oLogger->debugStr = $oCRNRSTN->getDebugStr();
 		$oCRNRSTN->clearDebugStr();
 
@@ -228,14 +228,14 @@ class crnrstn_environmentals {
 						
 						//
 						// INITIALIZE IP ADDRESS RESTRICTIONS from grantExclusiveAccess()
-						if(isset($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP'])){
-							$this->initExclusiveAccessFromSession();
+						if(isset($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
+							$this->initExclusiveAccess($oCRNRSTN);
 						}
 																		
 						//
 						// INITIALIZE IP ADDRESS RESTRICTIONS from denyAccess()
-						if(isset($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP'])){
-							$this->initDenyAccessFromSession();
+						if(isset($oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
+							$this->initDenyAccess($oCRNRSTN);
 						}
 						
 						//
@@ -243,15 +243,16 @@ class crnrstn_environmentals {
 						$this->oMYSQLI_CONN_MGR = clone $oCRNRSTN->oMYSQLI_CONN_MGR;
 						$this->oMYSQLI_CONN_MGR->setEnvironment($this);
 						
-						//
+//
 						// BEFORE ALLOCATING ADDITIONAL MEMORY RESOURCES, PROCESS IP AUTHENTICATION
-						if(isset($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']) || isset($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP'])){
-							self::$oLogger->logDebug("crnrstn_environmentals :: we have (from session[".session_id()."]) IP restrictions to process and apply for CRNRSTN config serial [".$this->configSerial."] and environment key [".self::$resourceKey."].");
+						if(isset($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]) || isset($oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
+							self::$oLogger->logDebug("crnrstn_environmentals :: we have IP restrictions to process and apply for CRNRSTN config serial [".$this->configSerial."] and environment key [".self::$resourceKey."].");
 							if(!$this->oCRNRSTN_IPSECURITY_MGR->authorizeEnvAccess($this, self::$resourceKey)){
 							
 								//
 								// WE COULD PERHAPS USE A MORE GRACEFUL WAY TO TRANSITION TO ERR...BUT THIS WORKS
 								// THE METHOD returnSrvrRespStatus() CONTAINS SOME CUSTOM HTML FOR OUTPUT IF YOU WANT TO TWEAK ITS DESIGN
+								// PERHAPS SOME FUTURE RELEASE OF CRNRSTN CAN 
 								$this->returnSrvrRespStatus(403);
 								exit();
 							}
@@ -298,10 +299,27 @@ class crnrstn_environmentals {
 
 		//
 		// INITIALIZE SESSION PARAMS FOR LOGGING FUNCTIONALITY 
-		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_LOG_PROFILE"] = $this->log_profl_ARRAY[crc32($this->configSerial)][self::$resourceKey];
-		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_LOG_ENDPOINT"] = $this->log_endpt_ARRAY[crc32($this->configSerial)][self::$resourceKey];
+		if(isset($this->log_profl_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
+			$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_LOG_PROFILE"] = $this->log_profl_ARRAY[crc32($this->configSerial)][self::$resourceKey];
+			
+			switch($this->log_profl_ARRAY[crc32($this->configSerial)][self::$resourceKey]){
+				case 'EMAIL':
+				case 'FILE':
+					$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_LOG_ENDPOINT"] = $this->log_endpt_ARRAY[crc32($this->configSerial)][self::$resourceKey];
+				break;
+				default:
+					//
+					// DO NOTHING
+				break;
+			}
+			
 		
 		self::$oLogger->logDebug("crnrstn_environmentals :: CRNRSTN logging initialized to sessionid[".session_id()."] as _CRNRSTN_LOG_PROFILE[".$this->log_profl_ARRAY[crc32($this->configSerial)][self::$resourceKey]."]  _CRNRSTN_LOG_ENDPOINT[".$this->log_endpt_ARRAY[crc32($this->configSerial)][self::$resourceKey]."].");
+		}else{
+			$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_LOG_PROFILE"] = 'DEFAULT';
+			self::$oLogger->logDebug("crnrstn_environmentals :: CRNRSTN logging NOT initialized for sessionid[".session_id()."]. Setting to default -> _CRNRSTN_LOG_PROFILE[".$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_LOG_PROFILE"]."]  _CRNRSTN_LOG_ENDPOINT[N/A].");
+		}
+		
 	}
 	
 	
@@ -327,10 +345,6 @@ class crnrstn_environmentals {
 		if(is_file($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
 			
 			//
-			// SAVE TO SESSION FOR FUTURE RETRIEVAL
-			$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP'] = $oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey];
-
-			//
 			// EXTRACT ACCESS-BY-IP AUTHORIZATION PROFILE FROM FILE
 			self::$oLogger->logDebug("crnrstn_environmentals :: we have a file to include and process for exclusive access IP restrictions at [".$oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]."].");
 			include_once($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
@@ -341,10 +355,7 @@ class crnrstn_environmentals {
 			// DO WE HAVE ANY IP DATA TO PROCESS
 			if($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey] != ""){
 				
-				//
-				// SAVE TO SESSION FOR FUTURE RETRIEVAL
-				$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP'] = $oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey];
-				self::$oLogger->logDebug("crnrstn_environmentals :: process grant exclusive access IP[".$oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]."] for this connection after updating session.");
+				self::$oLogger->logDebug("crnrstn_environmentals :: process grant exclusive access IP[".$oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]."] for this connection.");
 				$this->oCRNRSTN_IPSECURITY_MGR->grantAccessWKey(self::$resourceKey, $oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
 			}else{
 					//
@@ -353,37 +364,8 @@ class crnrstn_environmentals {
 		}
 	}
 	
-	private function initExclusiveAccessFromSession(){
-		
-		//
-		// PROCESS IP ADDRESS ACCESS AND RESTRICTION FOR SELECTED ENVIRONMENT
-		if(is_file($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP'])){
-			
-			//
-			// EXTRACT ACCESS-BY-IP AUTHORIZATION PROFILE FROM FILE
-			self::$oLogger->logDebug("crnrstn_environmentals :: (from session[".session_id()."]) we have a file to include and process for exclusive access IP restrictions at [".$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']."].");
-			include_once($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']);
-			
-		}else{
-			
-			// 
-			// DO WE HAVE IP DATA TO PROESS
-			if($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP'] != ""){
-				self::$oLogger->logDebug("crnrstn_environmentals :: (from session[".session_id()."]) process grant exclusive access IP[".$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']."] for this connection.");
-				$this->oCRNRSTN_IPSECURITY_MGR->grantAccessWKey(self::$resourceKey, $_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_GRANT_ACCESS_IP']);
-			}else{
-				//
-				// NO IP ADDRESSES PROVIDED. NOTHING TO DO HERE.
-			}
-		}
-	}
-	
 	private function initDenyAccess($oCRNRSTN){
 		if(is_file($oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
-			
-			//
-			// SAVE TO SESSION FOR LATER RETRIEVAL
-			$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP'] = $oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey];
 			
 			//
 			// EXTRACT ACCESS-BY-IP AUTHORIZATION PROFILE FROM FILE
@@ -392,10 +374,6 @@ class crnrstn_environmentals {
 				
 		}else{
 			if($oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey] != ""){
-				
-				//
-				// SAVE TO SESSION FOR LATER RETRIEVAL
-				$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP'] = $oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey];
 				
 				self::$oLogger->logDebug("crnrstn_environmentals :: process deny access IP[".$oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]."] for this connection.");
 				$this->oCRNRSTN_IPSECURITY_MGR->denyAccessWKey(self::$resourceKey, $oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
@@ -406,25 +384,6 @@ class crnrstn_environmentals {
 			}		
 		}		
 	}
-	
-	private function initDenyAccessFromSession(){
-		if(is_file($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP'])){
-			
-			//
-			// EXTRACT ACCESS-BY-IP AUTHORIZATION PROFILE FROM FILE
-			self::$oLogger->logDebug("crnrstn_environmentals :: we have (from session[".session_id()."]) a file to include and process for deny access IP restrictions at [".$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP']."].");
-			include_once($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP']);
-				
-		}else{
-			if($_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP'] != ""){
-				self::$oLogger->logDebug("crnrstn_environmentals :: process (from session[".session_id()."]) deny access IP[".$_SESSION['CRNRSTN_'.crc32($this->configSerial)]['CRNRSTN_DENY_ACCESS_IP']."] for this connection.");
-				$this->oCRNRSTN_IPSECURITY_MGR->denyAccessWKey(self::$resourceKey, $oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
-			}else{
-				//
-				// NO IP ADDRESSES PROVIDED. NOTHING TO DO HERE.
-			}		
-		}		
-	}	
 	
 	public function returnResouceKey(){
 		

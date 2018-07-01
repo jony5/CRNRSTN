@@ -165,25 +165,29 @@ class crnrstn_mysqli_conn_manager {
 			// *CRNRSTN ENVIRONMENTAL DETECTION + VALUES FROM THE CONFIGURATION FILE		
 			if(!($this->oSESSION_MGR->issetSessionParam('_CRNRSTN_DB_HOST'))){
 				
-				foreach (self::$db_host[crc32($this->crnrstnConfigSerial)][self::$appEnvKey] as $tmp_db_host=>$tmp_host_array) {
-					foreach($tmp_host_array as $tmp_db_db=>$tmp_db_array){
-						foreach($tmp_db_array as $tmp_un=>$oMYSQLI){
-
-							//
-							// INITIALIZE/REFRESH SESSION PARAMETERS
-							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_ENV', self::$appEnvKey);
-							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_HOST', $tmp_db_host);
-							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_DB', $tmp_db_db);
-							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_UN', $tmp_un);
-							
-							//
-							// INITIALIZE/REFRESH OPTIMIZATION HASH (IN SESSION) TO STREAMLINE PREPARATION OF DATABASE CONNECTION
-							$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_CNFG', md5($host.'::'.$db.'::'.$un.'::'.$port.'::'.$pwd));
-							
-							return true;
+				if(isset(self::$db_host[crc32($this->crnrstnConfigSerial)])){
+					foreach (self::$db_host[crc32($this->crnrstnConfigSerial)][self::$appEnvKey] as $tmp_db_host=>$tmp_host_array) {
+						foreach($tmp_host_array as $tmp_db_db=>$tmp_db_array){
+							foreach($tmp_db_array as $tmp_un=>$oMYSQLI){
+	
+								//
+								// INITIALIZE/REFRESH SESSION PARAMETERS
+								$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_ENV', self::$appEnvKey);
+								$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_HOST', $tmp_db_host);
+								$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_DB', $tmp_db_db);
+								$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_UN', $tmp_un);
+								
+								//
+								// INITIALIZE/REFRESH OPTIMIZATION HASH (IN SESSION) TO STREAMLINE PREPARATION OF DATABASE CONNECTION
+								$this->oSESSION_MGR->setSessionParam('_CRNRSTN_DB_CNFG', md5($host.'::'.$db.'::'.$un.'::'.$port.'::'.$pwd));
+								
+								return true;
+							}
 						}
 					}
-				}
+				}else{
+					return false;
+				}	
 				
 			}else{
 				

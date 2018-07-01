@@ -294,7 +294,6 @@ class crnrstn {
 		//
 		// CHECK THE ENVIRONMENTAL DETECTION KEYS FOR MATCHES AGAINST THE SERVER CONFIGURATION
 		if(array_key_exists($key, self::$handle_srvr_ARRAY)){
-			#error_log("crnrstn.inc.php (317) detectServerEnv [".$configSerial."][".$env."][".$key."] :: ".$value);
 			self::$oLogger->logDebug("crnrstn :: we have a SERVER param [".$key."] to check value [".$value."] for match against actual SERVER[].");
 			return self::isServerKeyMatch($configSerial, $env, $key, $value);
 		}else{
