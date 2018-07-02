@@ -7,24 +7,24 @@ if ( ! session_id() ) @ session_start();
 //
 // CRNRSTN CLASS INCLUDES ::
 require('./_crnrstn.root.inc.php');
-require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');				// CRNRSTN
-require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');				// LOGGING
+require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');						// CRNRSTN
+require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');					// LOGGING
 require($CRNRSTN_ROOT.'/_crnrstn/class/environmentals/crnrstn.env.inc.php');			// ENVIRONMENTALS
 require($CRNRSTN_ROOT.'/_crnrstn/class/security/crnrstn.ipauthmgr.inc.php');			// SECURITY
 require($CRNRSTN_ROOT.'/_crnrstn/class/database/mysqli/crnrstn.mysqli.inc.php');		// DATABASE
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');					// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');			// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');				// SOAP MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');			// SESSION MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');			// COOKIE MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');				// HTTP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');							// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');				// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');						// SOAP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');				// SESSION MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');				// COOKIE MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');					// HTTP MANAGEMENT
 
 //
 // SET DEBUG MODE [0=OFF, 1=ON]
 $CRNRSTN_debugMode = 1; 
 
 //
-// INSTANTIATE AN INSTANCE OF CRNRSTN BY PASSING A SERIALIZATION KEY FOR THIS CONFIG FILE + DEBUG MODE
+// INSTANTIATE AN INSTANCE OF CRNRSTN BY PASSING A SERIALIZATION KEY FOR THIS CONFIG FILE + debug mode.
 $oCRNRSTN = new crnrstn('s3ria1i5ati0n-k3y', $CRNRSTN_debugMode);
 
 ##
@@ -228,7 +228,7 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	// TO ACHIEVE OPTIMIZATION AT FIRST RUNTIME, PASS AN APPROPRIATE INTEGER VALUE TO requiredDetectionMatches(). WHEN THAT QUANTITY OF PROVIDED $_SERVER PARAMETERS MATCH FOR ANY GIVEN 
 	// DEFINED ENVIRONMENT'S defineEnvResource() KEYS, THE RUNNING ENVIRONMENT WILL BE FLAGGED. FURTHER PROCESSING OF ANY REMAINING defineEnvResource() KEYS CAN BE STREAMLINED.
 	$CRNRSTN_minServerMatchCnt = NULL;		// PASS NULL TO ENABLE AUTO-DETECT OF ENVIRONMENT BASED UPON STRONGEST $_SERVER[] CORRELATION. NULL IS A LITTLE SLOWER (THAN SPECIFYING AN INTEGER) ON FIRST LOAD.
-	#$CRNRSTN_minServerMatchCnt = 5;		// HOW MANY SERVER KEYS WILL YOU DEFINE (BELOW) FOR EACH ENVIRONMENT TO SUPPORT CRNRSTN ENVIRONMENTAL DETECTION? TEST; I HAVE HAD SITUATIONS WHERE ONLY NULL WORKED.
+	#$CRNRSTN_minServerMatchCnt = 5;		// HOW MANY SERVER KEYS WILL YOU DEFINE (BELOW) FOR EACH ENVIRONMENT TO SUPPORT CRNRSTN ENVIRONMENTAL DETECTION? TEST. TEST. TEST.
 	$oCRNRSTN->requiredDetectionMatches($CRNRSTN_minServerMatchCnt);
 
 	# # # # # # # # # # # # # # # #
