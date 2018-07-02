@@ -108,6 +108,9 @@ $tmp_crnrstnART[3] = '
 <style type="text/css">
 	body						{ margin:0;font-size:.7em; font-family:Arial, Helvetica, sans-serif; background:#EEE;}
 	#content_wrapper			{ width:100%; text-align:center; margin:0px auto;}
+	#mini_nav_wrapper			{ width:590px; text-align:center; margin:0px auto;}
+	.mini_nav_lnk				{ float:left; padding-right:9px;}
+	.topAnchor_lnk				{ padding:15px; float:right;}
 	#content_main				{ width:800px; text-align:center; margin:0px auto;}
 	#page_title					{ font-size:25px; padding-bottom:10px; padding-top:5px;}
 	#sess_clear_link			{ text-align:center; margin:0px auto;}
@@ -151,9 +154,18 @@ $tmp_crnrstnART[3] = '
 </head>
 
 <body>
+<a name="debugTop"></a>
 <div id="content_wrapper">
 	<div id="content_main">
     	<div id="page_title">C<span class="the_R">R</span>NRSTN Suite :: Configuration Debug</div>
+        <div id="mini_nav_wrapper">
+        	<div class="mini_nav_lnk"><a href="#configConfirm">Confirmation</a></div>
+        	<div class="mini_nav_lnk"><a href="#debugOutput">Debug Output</a></div>
+        	<div class="mini_nav_lnk"><a href="#opensslCiphers">Available OpenSSL Ciphers</a></div>
+            <div class="mini_nav_lnk"><a href="#hashAlgo">Available Hash Algorithms</a></div>
+            <div class="mini_nav_lnk"><a href="#dbTest">Database Configuration Test</a></div>
+            <div class="cb_5"></div>
+        </div>
         <div id="sess_clear_link"><a href="_crnrstn_config_purge.php" target="_self">clear session data</a> to reconfigure C<span class="the_R">R</span>NRSTN with any updated configuration file settings.</div>
         <div id="sess_id"><span style="font-family:Arial, Helvetica, sans-serif;">session id =</span> <?php echo session_id(); ?></div>
         <div class="cb_10"></div>
@@ -189,16 +201,68 @@ $tmp_crnrstnART[3] = '
         	</div>
         </div>
         <div class="cb_10"></div>
+        <a name="configConfirm"></a>
         <div id="crnrstn_params_wrapper">
+        	<div class="topAnchor_lnk"><a href="#debugTop">top</a></div>
         	<div id="crnrstn_param_overview"><strong>C<span class="the_R">R</span>NRSTN SUITE CONFIGURATION CONFIRMATION ::</strong><br>If <em>"SERVER_NAME = <?php echo $_SERVER['SERVER_NAME'] ?>"</em> does not load below, check your error logs for captured C<span class="the_R">R</span>NRSTN notifications. This test is expecting that <strong>SERVER_NAME</strong> has been configured through <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/defineenvresource/" target="_blank">defineEnvResource()</a> for this environment:</div>
         	<div class="cb_5"></div>
             <div class="crnrstn_param">SERVER_NAME = <?php echo $oCRNRSTN_ENV->getEnvParam('SERVER_NAME'); ?></div>
+    		<div class="crnrstn_param"><strong>Error reporting on the following types in this environment:</strong><br><?php 
+		
+				# SOURCE :: http://php.net/manual/en/errorfunc.constants.php#109430
+				$errLvl = error_reporting(); 
+				for ($i = 0; $i < 15;  $i++ ) { 
+					print FriendlyErrorType($errLvl & pow(2, $i)) . "<br>"; 
+				} 
+				
+				function FriendlyErrorType($type) 
+				{ 
+					switch($type) 
+					{ 
+						case E_ERROR: // 1 // 
+							return 'E_ERROR'; 
+						case E_WARNING: // 2 // 
+							return 'E_WARNING'; 
+						case E_PARSE: // 4 // 
+							return 'E_PARSE'; 
+						case E_NOTICE: // 8 // 
+							return 'E_NOTICE'; 
+						case E_CORE_ERROR: // 16 // 
+							return 'E_CORE_ERROR'; 
+						case E_CORE_WARNING: // 32 // 
+							return 'E_CORE_WARNING'; 
+						case E_COMPILE_ERROR: // 64 // 
+							return 'E_COMPILE_ERROR'; 
+						case E_COMPILE_WARNING: // 128 // 
+							return 'E_COMPILE_WARNING'; 
+						case E_USER_ERROR: // 256 // 
+							return 'E_USER_ERROR'; 
+						case E_USER_WARNING: // 512 // 
+							return 'E_USER_WARNING'; 
+						case E_USER_NOTICE: // 1024 // 
+							return 'E_USER_NOTICE'; 
+						case E_STRICT: // 2048 // 
+							return 'E_STRICT'; 
+						case E_RECOVERABLE_ERROR: // 4096 // 
+							return 'E_RECOVERABLE_ERROR'; 
+						case E_DEPRECATED: // 8192 // 
+							return 'E_DEPRECATED'; 
+						case E_USER_DEPRECATED: // 16384 // 
+							return 'E_USER_DEPRECATED'; 
+					} 
+					return ""; 
+				} 
+		
+		
+		?></div>
         </div>
         
     </div>
 </div>
 
 <!-- BEGIN DEBUG OUTPUT-->
+<a name="debugOutput"></a>
+<div class="topAnchor_lnk" style="float:none; text-align:center; margin:0px auto;"><a href="#debugTop">top</a></div>
 <h2>C<span class="the_R">R</span>NRSTN Debug Output ::</h2>
 <?php
 
@@ -315,8 +379,9 @@ if($oCRNRSTN_ENV->debugMode>0){
 </div>
 
 <div class="cb_20"></div>
-
+<a name="opensslCiphers"></a>
 <div id="crnrstn_algo_wrapper">
+	<div class="topAnchor_lnk"><a href="#debugTop">top</a></div>
 	<div id="crnrstn_algo_overview"><strong>SERVER's Available OpenSSL Ciphers ::</strong><br>Here is a list of available ciphers and aliases that can be passed into <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/initsessionencryption/" target="_blank">initSessionEncryption()</a> and <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/initcookieencryption/" target="_blank">initCookieEncryption()</a> as the <em>$opensslEncryptCipher</em> parameter to enable execution of  openssl_decrypt()/openssl_encrypt().</div>
 	<div class="cb_10"></div>
     <div class="hr"></div>
@@ -333,8 +398,9 @@ if($oCRNRSTN_ENV->debugMode>0){
 </div>
 
 <div class="cb_20"></div>
-
+<a name="hashAlgo"></a>
 <div id="crnrstn_hash_wrapper">
+	<div class="topAnchor_lnk"><a href="#debugTop">top</a></div>
 	<div id="crnrstn_hash_overview"><strong>SERVER's Available Hash Algorithms ::</strong><br>Here is a list of available hash algorithms that can be passed into <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/initsessionencryption/" target="_blank">initSessionEncryption()</a> and <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/initcookieencryption/" target="_blank">initCookieEncryption()</a> as the <em>$hmacAlg</em> parameter to be used by C<span class="the_R">R</span>NRSTN when using the HMAC library to generate a keyed hash value.</div>	
 	<div class="cb_10"></div>
     <div class="hr"></div>
@@ -353,7 +419,9 @@ if($oCRNRSTN_ENV->debugMode>0){
 </div>
 
 <div class="cb_20"></div>
+<a name="dbTest"></a>
 <div id="crnrstn_db_wrapper">
+	<div class="topAnchor_lnk"><a href="#debugTop">top</a></div>
 	<div id="crnrstn_db_overview"><strong>Database Configuration Test ::</strong><br>
     Update the queries in this test to align them to a table(s) in your database. Ensure that the database authentication profile for this environment has been configured through the execution of <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/adddatabase/" target="_blank">addDatabase()</a> in your C<span class="the_R">R</span>NRSTN Suite ::<br>configuration file.<br><br>Multi-query being sent to the database:
     </div>

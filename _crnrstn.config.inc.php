@@ -25,7 +25,7 @@ $CRNRSTN_debugMode = 1;
 
 //
 // INSTANTIATE AN INSTANCE OF CRNRSTN BY PASSING A SERIALIZATION KEY FOR THIS CONFIG FILE.
-$oCRNRSTN = new crnrstn('s3ria1izati0n-k3yz', $CRNRSTN_debugMode);
+$oCRNRSTN = new crnrstn('s3ria1i5ati0n-k3y', $CRNRSTN_debugMode);
 
 ##
 # REFERENCE OF ERROR LEVEL CONSTANTS
@@ -61,7 +61,8 @@ The error level constants are always available as part of the PHP core.
 ;   	E_ALL (Show all errors, warnings and notices including coding standards.)
 ;   	E_ALL & ~E_NOTICE  (Show all errors, except for notices)
 ;   	E_ALL & ~E_NOTICE & ~E_STRICT  (Show all errors, except for notices and coding standards warnings.)
-;   	E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR  (Show only errors)
+;   	E_COMPILE_ERROR | E_RECOVERABLE_ERROR | E_ERROR | E_CORE_ERROR  (Show only errors)
+;		E_ERROR | E_WARNING| E_PARSE (Report simple running errors)
 ;
 ; Default Value: E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
 ; Development Value: E_ALL
@@ -136,7 +137,7 @@ $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC', 'C://DATA_GOVT_SURVEILLANCE//_ww
 # $oCRNRSTN->grantExclusiveAccess('LOCALHOST_MAC','192.168.172.*,192.168.173.*,192.168.174.3,172.16.110.1');
 # $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.*');
 # $oCRNRSTN->grantExclusiveAccess('LOCALHOST_PC','127.0.0.1, 127.*, 130.51.10.*');
-$oCRNRSTN->grantExclusiveAccess('BLUEHOST_2018','127.0.0.1, 130.*, 130.51.10.*, FE80::230:80FF:FEF3:4701');
+# $oCRNRSTN->grantExclusiveAccess('BLUEHOST_2018','127.0.0.1, 130.*, 130.51.10.*, FE80::230:80FF:FEF3:4701');
 # # # # # # # # # # # # # # # 
 # # # # # # # # # # # # # # # 
 
@@ -192,7 +193,6 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	be unreadable to the application. Developer needs to take this into consideration and plan for use case where session data is 
 	unreadable...with graceful degradation or session reset.
 	
-	
 	$oCRNRSTN->initSessionEncryption([environment-key], [openssl-encryption-cipher], [openssl-encryption-key], [openssl-encryption-options], [hmac-algorithm]);
 	*/
 	$oCRNRSTN->initSessionEncryption('LOCALHOST_PC', 'AES-192-OFB', 'this-Is-the-encryption-key', OPENSSL_RAW_DATA, 'sha256');
@@ -227,8 +227,8 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	//
 	// TO ACHIEVE OPTIMIZATION AT FIRST RUNTIME, PASS AN APPROPRIATE INTEGER VALUE TO requiredDetectionMatches(). WHEN THAT QUANTITY OF PROVIDED $_SERVER PARAMETERS MATCH FOR ANY GIVEN 
 	// DEFINED ENVIRONMENT'S defineEnvResource() KEYS, THE RUNNING ENVIRONMENT WILL BE FLAGGED. FURTHER PROCESSING OF ANY REMAINING defineEnvResource() KEYS CAN BE STREAMLINED.
-	#$CRNRSTN_minServerMatchCnt = NULL;		// PASS NULL TO ENABLE AUTO-DETECT OF ENVIRONMENT BASED UPON STRONGEST $_SERVER[] CORRELATION. NULL IS A LITTLE SLOWER (THAN SPECIFYING AN INTEGER) ON FIRST LOAD.
-	$CRNRSTN_minServerMatchCnt = 5;			// HOW MANY SERVER KEYS WILL YOU DEFINE (BELOW) FOR EACH ENVIRONMENT TO SUPPORT CRNRSTN ENVIRONMENTAL DETECTION?
+	$CRNRSTN_minServerMatchCnt = NULL;		// PASS NULL TO ENABLE AUTO-DETECT OF ENVIRONMENT BASED UPON STRONGEST $_SERVER[] CORRELATION. NULL IS A LITTLE SLOWER (THAN SPECIFYING AN INTEGER) ON FIRST LOAD.
+	#$CRNRSTN_minServerMatchCnt = 5;		// HOW MANY SERVER KEYS WILL YOU DEFINE (BELOW) FOR EACH ENVIRONMENT TO SUPPORT CRNRSTN ENVIRONMENTAL DETECTION? TEST; I HAVE HAD SITUATIONS WHERE ONLY NULL WORKED.
 	$oCRNRSTN->requiredDetectionMatches($CRNRSTN_minServerMatchCnt);
 
 	# # # # # # # # # # # # # # # #

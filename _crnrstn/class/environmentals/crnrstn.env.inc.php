@@ -335,7 +335,7 @@ class crnrstn_environmentals {
 	
 	private function initializeErrorReporting($oCRNRSTN){
 		self::$oLogger->logDebug("crnrstn_environmentals :: initialize server error_reporting() to [".$oCRNRSTN->handle_env_ARRAY[crc32($this->configSerial)][self::$resourceKey]."].");
-		error_reporting($oCRNRSTN->handle_env_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
+		error_reporting((int) $oCRNRSTN->handle_env_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
 	}
 	
 	private function initExclusiveAccess($oCRNRSTN){

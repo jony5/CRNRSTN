@@ -38,7 +38,6 @@ class crnrstn {
 	public static $log_endpt_ARRAY = array();
 	
 	public $configSerial;
-	public $configMatchCount = array();
 	
 	public $opensslSessEncryptCipher = array();
 	public $opensslSessEncryptSecretKey = array();
@@ -99,7 +98,6 @@ class crnrstn {
 				//
 				// STORE CONFIG SERIAL KEY AND INITIALIZE MATCH COUNT
 				$this->configSerial = $serial;
-				$this->configMatchCount[crc32($serial)] = 0;
 				
 				//
 				// IF EARLY ENV DETECTION DURING defineEnvResource() DUE TO SPECIFIED requiredDetectionMatches(), STORE ENV HERE: 
