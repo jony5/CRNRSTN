@@ -99,7 +99,7 @@ $oCRNRSTN->addEnvironment('BLUEHOST_2018', E_ALL & ~E_NOTICE & ~E_STRICT);
 # $oCRNRSTN->initLogging('CYEXX_JONY5');							// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
 # $oCRNRSTN->initLogging('CYEXX_JONY5', 'DEFAULT');						// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
 # $oCRNRSTN->initLogging('CYEXX_JONY5', 'FILE', '/var/logFolder/log.txt');			// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
-$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO. EMAIL WILL BE SENT FROM noreply@$_SERVER['SERVER_NAME']
+$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO. EMAIL WILL BE SENT FROM crnrstn_noreply@$_SERVER['SERVER_NAME']
 $oCRNRSTN->initLogging('LOCALHOST_PC', 'SCREEN');												// OUTPUT LOG INFO TO SCREEN
 # $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');	// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
 # $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');	// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
