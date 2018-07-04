@@ -71,7 +71,7 @@ class crnrstn_environmentals {
 		$this->oCOOKIE_MGR = new crnrstn_cookie_manager();
 		$this->oHTTP_MGR = new crnrstn_http_manager();
 		
-		if(!($instanceType=='simple_configcheck')){
+		if(!($instanceType=='session_initialization_ping')){
 			
 			try{
 				

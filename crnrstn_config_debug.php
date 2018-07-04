@@ -263,7 +263,7 @@ $tmp_crnrstnART[3] = '
 <!-- BEGIN DEBUG OUTPUT-->
 <a name="debugOutput"></a>
 <div class="topAnchor_lnk" style="float:none; text-align:center; margin:0px auto;"><a href="#debugTop">top</a></div>
-<h2>C<span class="the_R">R</span>NRSTN Debug Output ::</h2>
+<h2>C<span class="the_R">R</span>NRSTN Debug Output :: <span style="font-size:12px; font-weight:normal;">(<a href="_crnrstn_config_purge.php" target="_self">clear session data</a>)</span></h2>
 <?php
 
 if($oCRNRSTN_ENV->debugMode<1){
