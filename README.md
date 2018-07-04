@@ -1,10 +1,11 @@
 # CRNRSTN ::
 CRNRSTN is an open source PHP class library that facilitates the 
 operation of an application across multiple server environments (e.g. localhost, stage, 
-preprod, production). With this tool, data and functionality with characteristics that 
-inherently create distinctions from one environment to the next...such as IP address 
-restrictions, error logging profiles, and database authentication credentials...can all
-be managed from one place.
+preprod, production) effectively and properly joining the "wall of SERVER" to the 
+"wall of application"...creating the two into one house. With this tool, data and 
+functionality with characteristics that inherently create distinctions from one 
+environment to the next...such as IP address restrictions, error logging profiles, 
+and database authentication credentials...can all be managed from one place.
 
 The CRNRSTN Suite :: can be configured for your environment(s) within a short amount of 
 time. Only FTP access to a "web accessible" directory for each environment is needed. This guide 
