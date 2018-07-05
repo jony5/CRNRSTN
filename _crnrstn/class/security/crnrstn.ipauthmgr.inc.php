@@ -1765,30 +1765,7 @@ class crnrstn_ip_auth_manager {
 		
 		return false;
 	}
-	
-	/**
-	* Attempt to find the client's IP Address
-	*
-	* @param bool Should the IP be converted using ip2long?
-	* @return string|long The IP Address
-	* @see http://stackoverflow.com/questions/444966/working-with-ipv6-addresses-in-php
-	* @author https://stackoverflow.com/users/51021/matpie
-	*/
-	public function GetRealRemoteIp($ForDatabase= false, $DatabaseParts= 2) {
-		$Ip = '0.0.0.0';
-		if (isset($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != '')
-			$Ip = $_SERVER['HTTP_CLIENT_IP'];
-		elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '')
-			$Ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] != '')
-			$Ip = $_SERVER['REMOTE_ADDR'];
-		if (($CommaPos = strpos($Ip, ',')) > 0)
-			$Ip = substr($Ip, 0, ($CommaPos - 1));
-	
-		$Ip = $this->IPv4To6($Ip);
-		return ($ForDatabase ? $this->IPv6ToLong($Ip, $DatabaseParts) : $Ip);
-	}
-	
+
 	/**
 	* Convert an IPv4 address to IPv6
 	*
