@@ -16,15 +16,28 @@
 #			   application from one environment to the next without having to change your code-base to account for environmentally 
 #			   specific parameters; and manage this all from one place within the CRNRSTN Suite ::
 
-#  LICENSE :: This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public 
-#			  License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any 
-#			  later version.
-#
-#  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
-#  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License along with this program. This license can also be downloaded from
-#  http://crnrstn.evifweb.com/license.txt.  If not, see <http://www.gnu.org/licenses/>
+#  MIT LICENSE :: Copyright 2018 Jonathan J5 Harris
+#			  	  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+#				  documentation files (the "Software"), to deal in the Software without restriction, including without limitation the 
+#				  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+#				  permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+#			  	  The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+#				  of the Software.
+
+#			  	  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+#			  	  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
+#				  OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT 
+#				  OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.ncluding without limitation the rights to use, copy, 
+#			  modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the 
+#			  Software is furnished to do so, subject to the following conditions:
+
+#			  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+#			  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+#			  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+#			  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+#			  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*
 // CLASS :: crnrstn_mysqli_conn
@@ -38,7 +51,7 @@ class crnrstn_mysqli_conn {
 	private static $db_pwd;					// = $pwd;
 	private static $db_port;				// = $port;
 	
-	public $mysqli;
+	private static $mysqli;
 	public static $queryResult_ARRAY = array();
 	public $oSESSION_MGR;
 	public $result;
@@ -64,20 +77,20 @@ class crnrstn_mysqli_conn {
 		// ESTABLISH AND RETURN MYSQLI CONNECTION
 		try{
 			if(self::$db_port!=''){
-				$mysqli = new mysqli(self::$db_host, self::$db_un, self::$db_pwd, self::$db_db, self::$db_port);
+				self::$mysqli = new mysqli(self::$db_host, self::$db_un, self::$db_pwd, self::$db_db, self::$db_port);
 			}else{
-				$mysqli = new mysqli(self::$db_host, self::$db_un, self::$db_pwd, self::$db_db);
+				self::$mysqli = new mysqli(self::$db_host, self::$db_un, self::$db_pwd, self::$db_db);
 			}
 			
-			if ($mysqli->connect_error) {
+			if (self::$mysqli->connect_error) {
 				
 				//
 				// HOOOSTON...VE HAF PROBLEM!
-				throw new Exception('CRNRSTN mysqli connection error :: failed to connect to MySQL: (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error.' on server '.$_SERVER['SERVER_NAME'].' ('.$_SERVER['SERVER_ADDR'].').');
+				throw new Exception('CRNRSTN mysqli connection error :: failed to connect to MySQL: (' . self::$mysqli->connect_errno . ') ' . self::$mysqli->connect_error.' on server '.$_SERVER['SERVER_NAME'].' ('.$_SERVER['SERVER_ADDR'].').');
 			}
 			
 			
-			return $mysqli;
+			return self::$mysqli;
 			
 		} catch( Exception $e ) {
 			
