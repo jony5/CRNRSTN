@@ -774,91 +774,6 @@ class crnrstn_ip_auth_manager {
 				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$tmp_ipconcat;
 				self::$allowedIpCounter++;
 			}
-			
-			
-			
-//			//
-//			// THERE IS NO COMMA DELIMITED LIST. PROCESS AS SINGLE VALUE.
-//			if(strpos($ip, '*')!==false){
-//				
-//				//
-//				// EXPLODE DOT NOTATION TO ARRAY FOR CONSTRUCTION OF MINIMUM VALUE
-//				self::$tmp_ipv4wildcard = explode('.', $ip);
-//				
-//				self::$tmp_ipconcat = '';
-//				for($i=0; $i<4; $i++){
-//					if(!isset(self::$tmp_ipv4wildcard[$i])){
-//						self::$tmp_ipv4wildcard[$i]=0;
-//					}else{
-//						if(trim(self::$tmp_ipv4wildcard[$i])=='*'){
-//							self::$tmp_ipv4wildcard[$i]=0;
-//						}
-//					}
-//					
-//					self::$tmp_ipconcat .= trim(self::$tmp_ipv4wildcard[$i]).'.';
-//
-//				}						
-//				
-//				//
-//				// REMOVE TRAILING .
-//				self::$tmp_ipconcat = rtrim(self::$tmp_ipconcat, '.');
-//				
-//				//
-//				// SAVE TO MAX/MIN RANGE INDICATOR FOR THIS ACCESS AUTHORIZATION PROFILE
-//				// APPLY IPV6 + LONG INT CONVERSION FOR LOCALLY CACHED RANGE BOUNDARY
-//				self::$allowedIpRangeMIN_ARRAY[$env][self::$allowedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				
-//				//
-//				// SAVE LOWER BOUND VALUE TO ARRAY
-//				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$tmp_ipconcat;
-//				
-//				//
-//				// EXPLODE DOT NOTATION TO ARRAY FOR CONSTRUCTION OF MAXIMUM VALUE
-//				self::$tmp_ipv4wildcard = explode('.', $ip);
-//
-//				self::$tmp_ipconcat = '';
-//				for($i=0; $i<4; $i++){
-//					if(!isset(self::$tmp_ipv4wildcard[$i])){
-//						self::$tmp_ipv4wildcard[$i]=255;
-//					}else{
-//						if(trim(self::$tmp_ipv4wildcard[$i])=='*'){
-//							self::$tmp_ipv4wildcard[$i]=255;
-//						}
-//					}
-//					
-//					self::$tmp_ipconcat .= trim(self::$tmp_ipv4wildcard[$i]).'.';
-//
-//				}						
-//				
-//				//
-//				// REMOVE TRAILING .
-//				self::$tmp_ipconcat = rtrim(self::$tmp_ipconcat, '.');
-//				
-//				self::$allowedIpRangeMAX_ARRAY[$env][self::$allowedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				
-//				// 
-//				// RAW RECORD OF UPPER BOUND OF PRE(IPV6 + LONG INT) CONVERTED IP VALUE
-//				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$allowedIp_ARRAY[$env][self::$allowedIpCounter].'-'.self::$tmp_ipconcat;
-//				self::$allowedIpCounter++;
-//				
-//			}else{
-//				
-//				//
-//				// NO WILDCARD IN PARAMETER. STORE TO TMP VAR
-//				self::$tmp_ipconcat = trim($ip);
-//								
-//				//
-//				// SAVE TO MAX/MIN RANGE INDICATOR FOR THIS ACCESS AUTHORIZATION PROFILE
-//				// APPLY IPV6 + LONG INT CONVERSION FOR LOCALLY CACHED RANGE BOUNDARY
-//				self::$allowedIpRangeMIN_ARRAY[$env][self::$allowedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				self::$allowedIpRangeMAX_ARRAY[$env][self::$allowedIpCounter] = self::$allowedIpRangeMIN_ARRAY[$env][self::$allowedIpCounter];
-//				
-//				// 
-//				// RAW RECORD OF PRE(IPV6 + LONG INT) CONVERTED IP VALUE
-//				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$tmp_ipconcat;
-//				self::$allowedIpCounter++;				
-//			}
-
 		
 		}
 	}
@@ -1930,91 +1845,6 @@ class crnrstn_ip_auth_manager {
 				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$tmp_ipconcat;
 				self::$allowedIpCounter++;
 			}
-			
-			
-			
-//			//
-//			// THERE IS NO COMMA DELIMITED LIST. PROCESS AS SINGLE VALUE.
-//			if(strpos($ip, '*')!==false){
-//				
-//				//
-//				// EXPLODE DOT NOTATION TO ARRAY FOR CONSTRUCTION OF MINIMUM VALUE
-//				self::$tmp_ipv4wildcard = explode('.', $ip);
-//				
-//				self::$tmp_ipconcat = '';
-//				for($i=0; $i<4; $i++){
-//					if(!isset(self::$tmp_ipv4wildcard[$i])){
-//						self::$tmp_ipv4wildcard[$i]=0;
-//					}else{
-//						if(trim(self::$tmp_ipv4wildcard[$i])=='*'){
-//							self::$tmp_ipv4wildcard[$i]=0;
-//						}
-//					}
-//					
-//					self::$tmp_ipconcat .= trim(self::$tmp_ipv4wildcard[$i]).'.';
-//
-//				}						
-//				
-//				//
-//				// REMOVE TRAILING .
-//				self::$tmp_ipconcat = rtrim(self::$tmp_ipconcat, '.');
-//				
-//				//
-//				// SAVE TO MAX/MIN RANGE INDICATOR FOR THIS ACCESS AUTHORIZATION PROFILE
-//				// APPLY IPV6 + LONG INT CONVERSION FOR LOCALLY CACHED RANGE BOUNDARY
-//				self::$allowedIpRangeMIN_ARRAY[$env][self::$allowedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				
-//				//
-//				// SAVE LOWER BOUND VALUE TO ARRAY
-//				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$tmp_ipconcat;
-//				
-//				//
-//				// EXPLODE DOT NOTATION TO ARRAY FOR CONSTRUCTION OF MAXIMUM VALUE
-//				self::$tmp_ipv4wildcard = explode('.', $ip);
-//
-//				self::$tmp_ipconcat = '';
-//				for($i=0; $i<4; $i++){
-//					if(!isset(self::$tmp_ipv4wildcard[$i])){
-//						self::$tmp_ipv4wildcard[$i]=255;
-//					}else{
-//						if(trim(self::$tmp_ipv4wildcard[$i])=='*'){
-//							self::$tmp_ipv4wildcard[$i]=255;
-//						}
-//					}
-//					
-//					self::$tmp_ipconcat .= trim(self::$tmp_ipv4wildcard[$i]).'.';
-//
-//				}						
-//				
-//				//
-//				// REMOVE TRAILING .
-//				self::$tmp_ipconcat = rtrim(self::$tmp_ipconcat, '.');
-//				
-//				self::$allowedIpRangeMAX_ARRAY[$env][self::$allowedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				
-//				// 
-//				// RAW RECORD OF UPPER BOUND OF PRE(IPV6 + LONG INT) CONVERTED IP VALUE
-//				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$allowedIp_ARRAY[$env][self::$allowedIpCounter].'-'.self::$tmp_ipconcat;
-//				self::$allowedIpCounter++;
-//				
-//			}else{
-//				
-//				//
-//				// NO WILDCARD IN PARAMETER. STORE TO TMP VAR
-//				self::$tmp_ipconcat = trim($ip);
-//								
-//				//
-//				// SAVE TO MAX/MIN RANGE INDICATOR FOR THIS ACCESS AUTHORIZATION PROFILE
-//				// APPLY IPV6 + LONG INT CONVERSION FOR LOCALLY CACHED RANGE BOUNDARY
-//				self::$allowedIpRangeMIN_ARRAY[$env][self::$allowedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				self::$allowedIpRangeMAX_ARRAY[$env][self::$allowedIpCounter] = self::$allowedIpRangeMIN_ARRAY[$env][self::$allowedIpCounter];
-//				
-//				// 
-//				// RAW RECORD OF PRE(IPV6 + LONG INT) CONVERTED IP VALUE
-//				self::$allowedIp_ARRAY[$env][self::$allowedIpCounter] = self::$tmp_ipconcat;
-//				self::$allowedIpCounter++;				
-//			}
-
 		}
 		
 		//
@@ -2034,17 +1864,6 @@ class crnrstn_ip_auth_manager {
 			}
 		}
 				
-//		foreach (self::$allowedIp_ARRAY[$env] as $pos=>$val) {
-//			if(self::$allowedIpRangeMIN_ARRAY[$env][$pos]!=0){
-//				$tmp_endState = 1;
-//			}
-//			
-//			if(($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)>=self::$allowedIpRangeMIN_ARRAY[$env][$pos]) && ($this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$clientIpAddress)), 1)<=self::$allowedIpRangeMAX_ARRAY[$env][$pos])){
-//
-//				return true;
-//			}
-//		}
-		
 		//
 		// IF WE GET THIS FAR AND NO MATCH
 		return false;
@@ -2373,91 +2192,8 @@ class crnrstn_ip_auth_manager {
 				self::$deniedIp_ARRAY[$env][self::$deniedIpCounter] = self::$tmp_ipconcat;
 				self::$deniedIpCounter++;
 			}
-			
-			
-			////
-//			// THERE IS NO COMMA DELIMITED LIST. PROCESS AS SINGLE VALUE.
-//			if(strpos($ip, '*')!==false){
-//				//
-//				// EXPLODE DOT NOTATION TO ARRAY FOR CONSTRUCTION OF MINIMUM VALUE
-//				self::$tmp_ipv4wildcard = explode('.', $ip);
-//				
-//				self::$tmp_ipconcat = '';
-//				for($i=0; $i<4; $i++){
-//					if(!isset(self::$tmp_ipv4wildcard[$i])){
-//						self::$tmp_ipv4wildcard[$i]=0;
-//					}else{
-//						if(trim(self::$tmp_ipv4wildcard[$i])=='*'){
-//							self::$tmp_ipv4wildcard[$i]=0;
-//						}
-//					}
-//					
-//					self::$tmp_ipconcat .= trim(self::$tmp_ipv4wildcard[$i]).'.';
-//				}						
-//				
-//				//
-//				// REMOVE TRAILING .
-//				self::$tmp_ipconcat = rtrim(self::$tmp_ipconcat, '.');
-//				
-//				//
-//				// SAVE TO MAX/MIN RANGE INDICATOR FOR THIS ACCESS AUTHORIZATION PROFILE
-//				// APPLY IPV6 + LONG INT CONVERSION FOR LOCALLY CACHED RANGE BOUNDARY
-//				self::$deniedIpRangeMIN_ARRAY[$env][self::$deniedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				
-//				//
-//				// SAVE LOWER BOUND VALUE TO ARRAY
-//				self::$deniedIp_ARRAY[$env][self::$deniedIpCounter] = self::$tmp_ipconcat;
-//				
-//				//
-//				// EXPLODE DOT NOTATION TO ARRAY FOR CONSTRUCTION OF MAXIMUM VALUE
-//				self::$tmp_ipv4wildcard = explode('.', $ip);
-//
-//				self::$tmp_ipconcat = '';
-//				for($i=0; $i<4; $i++){
-//					if(!isset(self::$tmp_ipv4wildcard[$i])){
-//						self::$tmp_ipv4wildcard[$i]=255;
-//					}else{
-//						if(trim(self::$tmp_ipv4wildcard[$i])=='*'){
-//							self::$tmp_ipv4wildcard[$i]=255;
-//						}
-//					}
-//					
-//					self::$tmp_ipconcat .= trim(self::$tmp_ipv4wildcard[$i]).'.';
-//				}						
-//					
-//				//
-//				// REMOVE TRAILING .
-//				self::$tmp_ipconcat = rtrim(self::$tmp_ipconcat, '.');
-//				
-//				self::$deniedIpRangeMAX_ARRAY[$env][self::$deniedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				
-//				// 
-//				// RAW RECORD OF UPPER BOUND OF PRE(IPV6 + LONG INT) CONVERTED IP VALUE
-//				self::$deniedIp_ARRAY[$env][self::$deniedIpCounter] = self::$deniedIp_ARRAY[$env][self::$deniedIpCounter].'-'.self::$tmp_ipconcat;
-//				self::$deniedIpCounter++;
-//				
-//			}else{
-//				//
-//				// NO WILDCARD IN PARAMETER. STORE TO TMP VAR
-//				self::$tmp_ipconcat = trim($ip);
-//				
-//				//
-//				// SAVE TO MAX/MIN RANGE INDICATOR FOR THIS ACCESS AUTHORIZATION PROFILE
-//				// APPLY IPV6 + LONG INT CONVERSION FOR LOCALLY CACHED RANGE BOUNDARY
-//				self::$deniedIpRangeMIN_ARRAY[$env][self::$deniedIpCounter] = $this->IPv6ToLong($this->ExpandIPv6Notation($this->IPv4To6(self::$tmp_ipconcat)), 1);
-//				self::$deniedIpRangeMAX_ARRAY[$env][self::$deniedIpCounter] = self::$deniedIpRangeMIN_ARRAY[$env][self::$deniedIpCounter];
-//				
-//				// 
-//				// RAW RECORD OF PRE(IPV6 + LONG INT) CONVERTED IP VALUE
-//				self::$deniedIp_ARRAY[$env][self::$deniedIpCounter] = self::$tmp_ipconcat;
-//				self::$deniedIpCounter++;				
-//			}
-
-
 
 		}
-		
-		
 		
 		//
 		// PROCESS DENIALS
