@@ -36,7 +36,7 @@ Overview of configuration/installation steps ::
    output of CRNRSTN when fully configured). The CRNRSTN debugger assumes that $_SERVER param 
    "SERVER_NAME" has been defined for each environment...so at least define that one (1) SERVER 
    param through defineEnvResource() for each hosting environment to support CRNRSTN's 
-   environmental detection.
+   environmental detection. When keying off of SERVER_NAME, WWW and non-WWW domain formats will indicate different environments...so perhaps make a separate profile for each in the configuration...or key off another data point like server IP.
    
 4) Promote this updated CRNRSTN configuration file from Step 3 along with any configured 
    configuration include files (for *database connectivity and *IP authorization) to all of your 
