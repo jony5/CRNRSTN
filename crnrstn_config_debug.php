@@ -209,7 +209,7 @@ $tmp_crnrstnART[3] = '
         <a name="configConfirm"></a>
         <div id="crnrstn_params_wrapper">
         	<div class="topAnchor_lnk"><a href="#debugTop">top</a></div>
-        	<div id="crnrstn_param_overview"><strong>C<span class="the_R">R</span>NRSTN SUITE CONFIGURATION CONFIRMATION ::</strong><br>If <em>"SERVER_NAME = <?php echo $_SERVER['SERVER_NAME'] ?>"</em> does not load below, check your error logs for captured C<span class="the_R">R</span>NRSTN notifications. This test is expecting that <strong>SERVER_NAME</strong> has been configured through <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/defineenvresource/" target="_blank">defineEnvResource()</a> for this environment:</div>
+        	<div id="crnrstn_param_overview"><strong>C<span class="the_R">R</span>NRSTN SUITE CONFIGURATION CONFIRMATION ::</strong><br>If <em>"SERVER_NAME = <?php echo $_SERVER['SERVER_NAME'] ?>"</em> does not load below, check your error logs for captured C<span class="the_R">R</span>NRSTN notifications. This test is expecting that <strong>SERVER_NAME</strong> has been configured through <a href="http://crnrstn.evifweb.com/documentation/classes/crnrstn/defineenvresource/" target="_blank">defineEnvResource()</a> for this environment. Consider configuring WWW and non-WWW domain formats as separate environments:</div>
         	<div class="cb_5"></div>
             <div class="crnrstn_param">SERVER_NAME = <?php echo $oCRNRSTN_ENV->getEnvParam('SERVER_NAME'); ?></div>
     		<div class="crnrstn_param"><strong>Error reporting on the following types in this environment:</strong><br><?php 
