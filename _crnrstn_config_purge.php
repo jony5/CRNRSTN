@@ -9,26 +9,22 @@
 #  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
 #  URI :: http://crnrstn.evifweb.com/
 #  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 
-#		environments (e.g. localhost, stage, preprod, and production). With this tool, data and functionality with 
-#		characteristics that inherently create distinctions from one environment to the next...such as IP address restrictions, 
-#		error logging profiles, and database authentication credentials...can all be managed through one framework for an entire 
-#		application. Once CRNRSTN has been configured for your different hosting environments, seamlessly release a web 
-#		application from one environment to the next without having to change your code-base to account for environmentally 
-#		specific parameters; and manage this all from one place within the CRNRSTN Suite ::
+#			   environments (e.g. localhost, stage, preprod, and production). With this tool, data and functionality with 
+#			   characteristics that inherently create distinctions from one environment to the next...such as IP address restrictions, 
+#			   error logging profiles, and database authentication credentials...can all be managed through one framework for an entire 
+#			   application. Once CRNRSTN has been configured for your different hosting environments, seamlessly release a web 
+#			   application from one environment to the next without having to change your code-base to account for environmentally 
+#			   specific parameters; and manage this all from one place within the CRNRSTN Suite ::
 
-#  MIT LICENSE :: Copyright 2018 Jonathan J5 Harris
-#		Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-#		documentation files (the "Software"), to deal in the Software without restriction, including without limitation the 
-#		rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
-#		permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-#		The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-#		of the Software.
-
-#		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
-#		WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS 
-#		OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT 
-#		OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#  LICENSE :: This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public 
+#			  License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any 
+#			  later version.
+#
+#  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+#  of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License along with this program. This license can also be downloaded from
+#  http://crnrstn.evifweb.com/license.txt.  If not, see <http://www.gnu.org/licenses/>
 
 require('_crnrstn.root.inc.php');
 //include_once($CRNRSTN_ROOT . '_crnrstn.config.inc.php');		// UNCOMMENT WHEN CRNRSTN IS CONFIGURED TO ENABLE FLUSH OF COOKIE DATA.
@@ -50,7 +46,7 @@ session_regenerate_id(true);
 
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -102,9 +98,14 @@ session_regenerate_id(true);
 						foreach($data1 as $key2=>$data2){
 							if(is_array($data2)){
 								foreach($data2 as $key3=>$data3){
-									if($key3=="_CRNRSTN_SESS_ENCRYPT_SECRET_KEY"){ $data3="XxXxXxXxXxXxX"; }
-									if($key3=="_CRNRSTN_COOKIE_ENCRYPT_SECRET_KEY"){ $data3="XxXxXxXxXxXxX"; }
-									if($key3=="_CRNRSTN_LOG_ENDPOINT" && (strpos($data3,"@")>0)){ $data3="XxXxXxXxXxXxX"; }
+									$pos[0] = strpos($key3, '_COOKIE_');
+									$pos[1] = strpos($key3, '_TUNNEL_');
+									$pos[2] = strpos($key3, '_SESS_');
+									for($i=0;$i<sizeof($pos);$i++){
+										if($pos[$i] !== false){ $data3="##### REDACTED #####"; }
+									}
+									
+									if($key3=="_CRNRSTN_LOG_ENDPOINT" && (strpos($data3,"@")>0)){ $data3="##### REDACTED #####"; }
 									echo '<div class="server_param">'.$key3." = ".$data3."</div>";
 								}
 							}else{
