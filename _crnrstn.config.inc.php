@@ -7,17 +7,17 @@ if ( ! session_id() ) @ session_start();
 //
 // CRNRSTN CLASS INCLUDES ::
 require('./_crnrstn.root.inc.php');
-require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');						// CRNRSTN
-require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');					// LOGGING
+require($CRNRSTN_ROOT.'/_crnrstn/class/crnrstn/crnrstn.inc.php');				// CRNRSTN
+require($CRNRSTN_ROOT.'/_crnrstn/class/logging/crnrstn.log.inc.php');				// LOGGING
 require($CRNRSTN_ROOT.'/_crnrstn/class/environmentals/crnrstn.env.inc.php');			// ENVIRONMENTALS
 require($CRNRSTN_ROOT.'/_crnrstn/class/security/crnrstn.ipauthmgr.inc.php');			// SECURITY
 require($CRNRSTN_ROOT.'/_crnrstn/class/database/mysqli/crnrstn.mysqli.inc.php');		// DATABASE
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');							// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) https://github.com/econea/nusoap
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');				// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/  
-require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');						// SOAP MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');				// SESSION MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');				// COOKIE MANAGEMENT
-require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');					// HTTP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/nusoap.php');					// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) https://github.com/econea/nusoap
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/nusoap/class.wsdlcache.php');			// NUSOAP (3RD PARTY CLIENT/SERVER SOAP) http://sourceforge.net/projects/nusoap/  
+require($CRNRSTN_ROOT.'/_crnrstn/class/soa/crnrstn.soap.inc.php');				// SOAP MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.session.inc.php');			// SESSION MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.cookie.inc.php');			// COOKIE MANAGEMENT
+require($CRNRSTN_ROOT.'/_crnrstn/class/session/crnrstn.http.inc.php');				// HTTP MANAGEMENT
 
 //
 // SET DEBUG MODE [0=OFF, 1=ON]
@@ -96,13 +96,13 @@ $oCRNRSTN->addEnvironment('BLUEHOST_2018', E_ALL & ~E_NOTICE & ~E_STRICT);
 # $oCRNRSTN->initLogging('CYEXX_JONY5', 'EMAIL', 'email_one@address.com, email_two@address.com, email_n@address.com');
 
 # e.g. LOGGING TO FILE (SYSTEM DEFAULT or CUSTOM)
-# $oCRNRSTN->initLogging('CYEXX_JONY5');										// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
-# $oCRNRSTN->initLogging('CYEXX_JONY5', 'DEFAULT');								// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
-# $oCRNRSTN->initLogging('CYEXX_JONY5', 'FILE', '/var/logFolder/log.txt');		// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
-$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email1@domain.com,email2@domain.com');			// EMAIL LOG INFO. EMAIL WILL BE SENT FROM crnrstn_noreply@$_SERVER['SERVER_NAME']
+# $oCRNRSTN->initLogging('CYEXX_JONY5');							// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+# $oCRNRSTN->initLogging('CYEXX_JONY5', 'DEFAULT');						// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
+# $oCRNRSTN->initLogging('CYEXX_JONY5', 'FILE', '/var/logFolder/log.txt');			// INCLUDE PATH + FILENAME FOR CUSTOM LOG FILE
+$oCRNRSTN->initLogging('BLUEHOST_2018', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO. EMAIL WILL BE SENT FROM crnrstn_noreply@$_SERVER['SERVER_NAME']
 $oCRNRSTN->initLogging('LOCALHOST_PC', 'SCREEN');												// OUTPUT LOG INFO TO SCREEN
-# $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');		// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
-# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');		// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
+# $oCRNRSTN->initLogging('LOCALHOST_PC', 'EMAIL','email1@domain.com,email2@domain.com');	// EMAIL LOG INFO TO LIST OF COMMA DELIMITED EMAIL ACCOUNTS
+# $oCRNRSTN->initLogging('LOCALHOST_MAC', 'FILE','/var/www/html/woodford/customlogs.txt');	// PATH TO FOLDER + FILE WHERE LOG DATA WILL BE APPENDED
 $oCRNRSTN->initLogging('LOCALHOST_MAC');														// SYSTEM DEFAULT ERROR LOGGING MECHANISMS USED
 # # # # # # # # # # # # # # # 
 # # # # # # # # # # # # # # # 
