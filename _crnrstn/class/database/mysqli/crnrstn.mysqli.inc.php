@@ -80,7 +80,6 @@ class crnrstn_mysqli_conn {
 				throw new Exception('CRNRSTN mysqli connection error :: failed to connect to MySQL: (' . self::$mysqli->connect_errno . ') ' . self::$mysqli->connect_error.' on server '.$_SERVER['SERVER_NAME'].' ('.$_SERVER['SERVER_ADDR'].').');
 			}
 			
-			
 			return self::$mysqli;
 			
 		} catch( Exception $e ) {
