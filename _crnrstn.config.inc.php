@@ -256,9 +256,9 @@ if(!$oCRNRSTN_ENV->isConfigured($oCRNRSTN)){
 	# HERE ARE EXAMPLES OF SOME CORE/RESERVED SERVER SUPER GLOBAL PARAMETERS
 	# SUPER GLOBAL SERVER VALUES FROM THESE DEFINITIONS WILL BE USED TO CONFIGURE CRNRSTN TO ITS RUNNING ENV PER REAL-TIME SERVER SETTINGS
 	#___KEY__<--(custom or an existing $_SERVER[] key)  ___EXAMPLE OF VALUE____________________________
-	# DOCUMENT_ROOT									(e.g. 'C:\\[path]\\[to]\\[site-root]\\[folder]\\' or '/var/www/')
-	# SERVER_NAME									(e.g. 'localhost' or 'stage.mydomain.com' or 'mydomain.com')
-	# SERVER_ADDR									(e.g. '265.121.2.110')
+	# DOCUMENT_ROOT				(e.g. 'C:\\[path]\\[to]\\[site-root]\\[folder]\\' or '/var/www/')
+	# SERVER_NAME				(e.g. 'localhost' or 'stage.mydomain.com' or 'mydomain.com')
+	# SERVER_ADDR				(e.g. '265.121.2.110')
 	# 
 	# For a more complete list of available super global array parameters, please see :: 
 	# http://php.net/manual/en/reserved.variables.server.php
