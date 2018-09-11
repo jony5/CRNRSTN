@@ -272,7 +272,7 @@ class crnrstn_environmentals {
 						$this->oMYSQLI_CONN_MGR = clone $oCRNRSTN->oMYSQLI_CONN_MGR;
 						$this->oMYSQLI_CONN_MGR->setEnvironment($this);
 						
-//
+						//
 						// BEFORE ALLOCATING ADDITIONAL MEMORY RESOURCES, PROCESS IP AUTHENTICATION
 						if(isset($oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]) || isset($oCRNRSTN->deny_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey])){
 							self::$oLogger->logDebug("crnrstn_environmentals :: we have IP restrictions to process and apply for CRNRSTN config serial [".$this->configSerial."] and environment key [".self::$resourceKey."].");
@@ -387,8 +387,8 @@ class crnrstn_environmentals {
 				self::$oLogger->logDebug("crnrstn_environmentals :: process grant exclusive access IP[".$oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]."] for this connection.");
 				$this->oCRNRSTN_IPSECURITY_MGR->grantAccessWKey(self::$resourceKey, $oCRNRSTN->grant_accessIP_ARRAY[crc32($this->configSerial)][self::$resourceKey]);
 			}else{
-					//
-					// NO IP ADDRESSES PROVIDED. NOTHING TO DO HERE.
+				//
+				// NO IP ADDRESSES PROVIDED. NOTHING TO DO HERE.
 			}
 		}
 	}
