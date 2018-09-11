@@ -120,7 +120,7 @@ class crnrstn_mysqli_conn_manager {
 	private static $cache_db_pwd;				// = $pwd;
 	private static $cache_db_port;				// = $port;
 	
-	public $mysqli;
+	private static $mysqli;
 	
 	private static $appEnvKey;
 	
@@ -474,9 +474,9 @@ class crnrstn_mysqli_conn_manager {
 				
 				//
 				// ESTABLISH A CONNECTION AND RETURN CONNECTION HANDLE
-				$mysqli = $oMYSQLI->connReturn();
+				self::$mysqli = $oMYSQLI->connReturn();
 				
-				return $mysqli;
+				return self::$mysqli;
 			}else{
 				
 				//
