@@ -11,8 +11,8 @@ include_once($CRNRSTN_ROOT . '_crnrstn.config.inc.php');
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>CRNRSTN Suite :: Welcome</title>
     <style type="text/css">
-	* 							{ font-family:Arial, Helvetica, sans-serif; color:#333; }
-	p 							{ font-size: 13px; }
+	* 						{ font-family:Arial, Helvetica, sans-serif; color:#333; }
+	p 						{ font-size: 13px; }
 	.the_R						{ color:#F00; }
 	.success 					{ color:#4A9E64; }
 	</style>
