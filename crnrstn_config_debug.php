@@ -510,7 +510,7 @@ if($oCRNRSTN_ENV->debugMode>0){
 	?>
 	</div>
 </div>
-<!-- I DO NOT MIND IF THE FOLLOWING LINE IS REMOVED. THE GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version APPLIES TO THIS DOCUMENT. -->
+<!-- I DO NOT MIND IF THE FOLLOWING LINE IS REMOVED. -->
 <div id="ftr_cw">&copy; 2012-2018 Jonathan 'J5' Harris :: All Rights Reserved.</div>  
 
 </body>
