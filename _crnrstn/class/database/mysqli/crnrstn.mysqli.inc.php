@@ -131,9 +131,7 @@ class crnrstn_mysqli_conn_manager {
 		
 		// 
 		// INSTANTIATE LOGGER
-		if(!isset(self::$oLogger)){
-			self::$oLogger = new crnrstn_logging();
-		}
+		self::$oLogger = new crnrstn_logging();
 		
 		$this->crnrstnConfigSerial = $configSerial;
 		
