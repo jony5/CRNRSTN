@@ -3,9 +3,9 @@
 // J5
 // Code is Poetry */
 #  CRNRSTN Suite :: An Open Source PHP Class Library to facilitate the operation of an application across multiple hosting environments.
-#  Copyright (C) 2012-2018 Evifweb Development
-#  VERSION :: 1.0.0
-#  RELEASE DATE :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
+#  Copyright (C) 2012-2018 eVifweb Development
+#  VERSION :: 1.0.1
+#  RELEASE DATE (v1.0.0) :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
 #  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
 #  URI :: http://crnrstn.evifweb.com/
 #  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 
@@ -33,7 +33,7 @@
 /*
 // CLASS :: crnrstn
 // AUTHOR :: Jonathan 'J5' Harris <jharris@evifweb.com>
-// VERSION :: 1.0.0
+// VERSION :: 1.0.1
 */
 class crnrstn {
 
@@ -52,6 +52,11 @@ class crnrstn {
 	public $opensslCookieEncryptSecretKey = array();
 	public $opensslCookieEncryptOptions = array();
 	public $cookieHmac_algorithm = array();
+	
+	public $oensslTunnelEncryptCipher = array();
+	public $opensslTunnelEncryptSecretKey = array();
+	public $opensslTunnelEncryptOptions = array();
+	public $tunnelHmac_algorithm = array();
 	
 	private static $handle_srvr_ARRAY = array();
 
@@ -75,10 +80,12 @@ class crnrstn {
 	private static $envMatchCount;
 	private static $envChecksum;
 
-	public $debugMode;	
+	public $debugMode;
+	public $starttime;
 
 	public function __construct($serial,$debugMode=0) {		
-
+		$this->starttime = $this->microtime_float();
+		
 		$this->debugMode = $debugMode;
 				
 		//
@@ -209,7 +216,8 @@ class crnrstn {
 			
 			//
 			// SEND DATABASE CONFIGURATION PARAMETERS TO THE CONNECTION MANAGER
-			self::$oLogger->logDebug("crnrstn :: addDatabase() for environment [".$env."] sending database authentication profile [db->".$db." | un->".$un." |...etc.] to connection manager.");
+			#self::$oLogger->logDebug("crnrstn :: addDatabase() for environment [".$env."] sending database authentication profile [db->".$db." | un->".$un." |...etc.] to connection manager.");
+			self::$oLogger->logDebug("crnrstn :: addDatabase() for environment [".$env."] sending database authentication profile [db->##### REDACTED ##### | un->##### REDACTED ##### |...etc.] to connection manager.");
 			$this->oMYSQLI_CONN_MGR->addConnection($env, $host, $un, $pwd, $db, $port);
 		}
 		
@@ -337,14 +345,15 @@ class crnrstn {
 		try{
 			if($env=="" || $encryptCipher=="" || $encryptSecretKey=="" || $hmac_alg==""){
 				self::$oLogger->logDebug("crnrstn :: ERROR :: missing required information to configure initSessionEncryption().");
-				throw new Exception('CRNRSTN initialization ERROR :: initSessionEncryption was called but was missing paramter information and so session encryption was not able to be initialized. Some parameters are required. env['.$env.'] encryptCipher['.$encryptCipher.'] encryptSecretKey['.$encryptSecretKey.'] (optional)encryptOptions['.$encryptOptions.'] hmac_alg['.$hmac_alg.']');
+				throw new Exception('CRNRSTN initialization ERROR :: initSessionEncryption was called but was missing paramter information and so session encryption was not able to be initialized. Some parameters are required. env['.$env.'] encryptCipher['.$encryptCipher.'] encryptSecretKey[##### REDACTED #####] (optional)encryptOptions['.$encryptOptions.'] hmac_alg['.$hmac_alg.']');
 				
 			}else{
 				$this->opensslSessEncryptCipher[crc32($this->configSerial)][crc32($env)] = $encryptCipher;
 				$this->opensslSessEncryptSecretKey[crc32($this->configSerial)][crc32($env)] = $encryptSecretKey;
 				$this->opensslSessEncryptOptions[crc32($this->configSerial)][crc32($env)] = $encryptOptions;
-				$this->sessHmac_algorithm[crc32($this->configSerial)][crc32($env)] = $hmac_alg;
-				self::$oLogger->logDebug("crnrstn :: session encryption initialized for environment [".$env."] to cipher [".$encryptCipher."] and hmac algorithm [".$hmac_alg."].");
+				$this->sessHmac_algorithm[crc32($this->configSerial)][crc32($env)] = $hmac_alg; #
+				#self::$oLogger->logDebug("crnrstn :: session encryption initialized for environment [".$env."] to cipher [".$encryptCipher."] and hmac algorithm [".$hmac_alg."].");
+				self::$oLogger->logDebug("crnrstn :: session encryption initialized for environment [".$env."] to cipher [##### REDACTED #####] and hmac algorithm [##### REDACTED #####].");
 				return true;
 			}
 			
@@ -360,7 +369,7 @@ class crnrstn {
 		try{
 			if($env=="" || $encryptCipher=="" || $encryptSecretKey=="" || $hmac_alg==""){
 				self::$oLogger->logDebug("crnrstn :: ERROR :: missing required information to configure initCookieEncryption().");
-				throw new Exception('CRNRSTN initialization ERROR :: initCookieEncryption was called but was missing paramter information and so cookie encryption was not able to be initialized. Some parameters are required. env['.$env.'] encryptCipher['.$encryptCipher.'] encryptSecretKey['.$encryptSecretKey.'] (optional)encryptOptions['.$encryptOptions.'] hmac_alg['.$hmac_alg.']');
+				throw new Exception('CRNRSTN initialization ERROR :: initCookieEncryption was called but was missing paramter information and so cookie encryption was not able to be initialized. Some parameters are required. env['.$env.'] encryptCipher['.$encryptCipher.'] encryptSecretKey[xxx] (optional)encryptOptions['.$encryptOptions.'] hmac_alg['.$hmac_alg.']');
 				
 			}else{
 				
@@ -368,7 +377,8 @@ class crnrstn {
 				$this->opensslCookieEncryptSecretKey[crc32($this->configSerial)][crc32($env)] = $encryptSecretKey;
 				$this->opensslCookieEncryptOptions[crc32($this->configSerial)][crc32($env)] = $encryptOptions;
 				$this->cookieHmac_algorithm[crc32($this->configSerial)][crc32($env)] = $hmac_alg;
-				self::$oLogger->logDebug("crnrstn :: cookie encryption initialized for environment [".$env."] to cipher [".$encryptCipher."] and hmac algorithm [".$hmac_alg."].");
+				#self::$oLogger->logDebug("crnrstn :: cookie encryption initialized for environment [".$env."] to cipher [".$encryptCipher."] and hmac algorithm [".$hmac_alg."].");
+				self::$oLogger->logDebug("crnrstn :: cookie encryption initialized for environment [".$env."] to cipher [##### REDACTED #####] and hmac algorithm [##### REDACTED #####].");
 				return true;
 			}
 			
@@ -377,6 +387,33 @@ class crnrstn {
 			//
 			// SEND THIS THROUGH THE LOGGER OBJECT
 			self::$oLogger->captureNotice('crnrstn->initSessionEncryption()', LOG_ERR, $e->getMessage());
+		}
+			
+			
+	} 
+	
+	public function initTunnelEncryption($env, $encryptCipher, $encryptSecretKey, $encryptOptions, $hmac_alg){	
+		try{
+			if($env=="" || $encryptCipher=="" || $encryptSecretKey=="" || $hmac_alg==""){
+				self::$oLogger->logDebug("crnrstn :: ERROR :: missing required information to configure initTunnelEncryption().");
+				throw new Exception('CRNRSTN initialization ERROR :: initTunnelEncryption was called but was missing paramter information and so tunnel encryption was not able to be initialized. Some parameters are required. env['.$env.'] encryptCipher['.$encryptCipher.'] encryptSecretKey[##### REDACTED #####] (optional)encryptOptions['.$encryptOptions.'] hmac_alg['.$hmac_alg.']');
+				
+			}else{
+				
+				$this->opensslTunnelEncryptCipher[crc32($this->configSerial)][crc32($env)] = $encryptCipher;
+				$this->opensslTunnelEncryptSecretKey[crc32($this->configSerial)][crc32($env)] = $encryptSecretKey;
+				$this->opensslTunnelEncryptOptions[crc32($this->configSerial)][crc32($env)] = $encryptOptions;
+				$this->tunnelHmac_algorithm[crc32($this->configSerial)][crc32($env)] = $hmac_alg;
+				#self::$oLogger->logDebug("crnrstn :: tunnel encryption initialized for environment [".$env."] to cipher [".$encryptCipher."] and hmac algorithm [".$hmac_alg."].");
+				self::$oLogger->logDebug("crnrstn :: tunnel encryption initialized for environment [".$env."] to cipher [##### REDACTED #####] and hmac algorithm [##### REDACTED #####].");
+				return true;
+			}
+			
+		}catch( Exception $e ) {
+			
+			//
+			// SEND THIS THROUGH THE LOGGER OBJECT
+			self::$oLogger->captureNotice('crnrstn->initTunnelEncryption()', LOG_ERR, $e->getMessage());
 		}
 			
 			
@@ -466,12 +503,24 @@ class crnrstn {
 		return $this->debugMode;
 	}
 	
+	public function getStartTime(){
+		
+		return $this->starttime;
+	}
+	
 	public function debugTransfer($currDebugStr){
 		
 		//
 		// DUE TO THE IMMINENT DELETION OF CRNRSTN_ENV...MOVE DEBUG OUTPUT HERE TO PERSIST
 		self::$oLogger->transferDebug($currDebugStr);
 			
+	}
+	
+	//	
+	// SOURCE :: http://www.php.net/manual/en/function.microtime.php
+	private function microtime_float(){
+	    list($usec, $sec) = explode(" ", microtime());
+	    return ((float)$usec + (float)$sec);
 	}
 	
 	public function __destruct() {

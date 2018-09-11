@@ -4,8 +4,8 @@
 // Code is Poetry */
 #  CRNRSTN Suite :: An Open Source PHP Class Library to facilitate the operation of an application across multiple hosting environments.
 #  Copyright (C) 2012-2018 Evifweb Development
-#  VERSION :: 1.0.0
-#  RELEASE DATE :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
+#  VERSION :: 1.0.1
+#  RELEASE DATE (v1.0.0) :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
 #  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
 #  URI :: http://crnrstn.evifweb.com/
 #  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 

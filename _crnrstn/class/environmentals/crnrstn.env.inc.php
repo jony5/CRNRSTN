@@ -3,9 +3,9 @@
 // J5
 // Code is Poetry */
 #  CRNRSTN Suite :: An Open Source PHP Class Library to facilitate the operation of an application across multiple hosting environments.
-#  Copyright (C) 2012-2018 Evifweb Development
-#  VERSION :: 1.0.0
-#  RELEASE DATE :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
+#  Copyright (C) 2012-2018 eVifweb Development
+#  VERSION :: 1.0.1
+#  RELEASE DATE (v1.0.0) :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
 #  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
 #  URI :: http://crnrstn.evifweb.com/
 #  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 
@@ -42,7 +42,7 @@
 /*
 // CLASS :: crnrstn_environmentals
 // AUTHOR :: Jonathan 'J5' Harris <jharris@evifweb.com>
-// VERSION :: 1.0.0
+// VERSION :: 1.0.1
 */
 class crnrstn_environmentals {
 	public $configSerial;
@@ -61,13 +61,22 @@ class crnrstn_environmentals {
 	public $oHTTP_MGR;
 	
 	private static $sess_env_param_ARRAY = array();
+	private static $m_starttime = array();
+	private static $encryptableDataTypes = array();
 	
 	private static $requestProtocol;
 	
 	public $debugStr = "";
 	public $debugMode;
+	public $starttime;
 			
 	public function __construct($oCRNRSTN,$instanceType=NULL) {
+		
+		$this->starttime = $oCRNRSTN->getStartTime();
+		
+		//
+		// INITIALIZE ARRAY OF ENCRYPTABLE DATATYPES
+		self::$encryptableDataTypes = array('string','integer','double','float','int');
 		
 		//
 		// ROLL OVER DEBUG TRACE FROM CRNRSTN OBJECT AND THEN CONTINUE TO APPEND
@@ -147,6 +156,13 @@ class crnrstn_environmentals {
 						// INITIALIZE COOKIE ENCRYPTION
 						if(isset($oCRNRSTN->opensslCookieEncryptCipher[crc32($this->configSerial)][self::$resourceKey])){
 							$this->initCookieEncryption($oCRNRSTN);
+							
+						}
+						
+						//
+						// INITIALIZE TUNNEL ENCRYPTION
+						if(isset($oCRNRSTN->opensslTunnelEncryptCipher[crc32($this->configSerial)][self::$resourceKey])){
+							$this->initTunnelEncryption($oCRNRSTN);
 							
 						}
 						
@@ -414,7 +430,8 @@ class crnrstn_environmentals {
 		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_SESS_ENCRYPT_OPTIONS"] = $oCRNRSTN->opensslSessEncryptOptions[crc32($this->configSerial)][self::$resourceKey];
 		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_SESS_ENCRYPT_HMAC_ALG"] = $oCRNRSTN->sessHmac_algorithm[crc32($this->configSerial)][self::$resourceKey];
 		
-		self::$oLogger->logDebug("crnrstn_environmentals :: session encryption configured to _CRNRSTN_SESS_ENCRYPT_CIPHER[".$oCRNRSTN->opensslSessEncryptCipher[crc32($this->configSerial)][self::$resourceKey]."] _CRNRSTN_SESS_ENCRYPT_HMAC_ALG[".$oCRNRSTN->sessHmac_algorithm[crc32($this->configSerial)][self::$resourceKey]."].");
+		#self::$oLogger->logDebug("crnrstn_environmentals :: session encryption configured to _CRNRSTN_SESS_ENCRYPT_CIPHER[".$oCRNRSTN->opensslSessEncryptCipher[crc32($this->configSerial)][self::$resourceKey]."] _CRNRSTN_SESS_ENCRYPT_HMAC_ALG[".$oCRNRSTN->sessHmac_algorithm[crc32($this->configSerial)][self::$resourceKey]."].");
+		self::$oLogger->logDebug("crnrstn_environmentals :: session encryption configured to _CRNRSTN_SESS_ENCRYPT_CIPHER[##### REDACTED #####] _CRNRSTN_SESS_ENCRYPT_HMAC_ALG[##### REDACTED #####].");
 		
 	}
 	
@@ -427,8 +444,151 @@ class crnrstn_environmentals {
 		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_COOKIE_ENCRYPT_OPTIONS"] = $oCRNRSTN->opensslCookieEncryptOptions[crc32($this->configSerial)][self::$resourceKey];
 		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_COOKIE_ENCRYPT_HMAC_ALG"] = $oCRNRSTN->cookieHmac_algorithm[crc32($this->configSerial)][self::$resourceKey];
 		
-		self::$oLogger->logDebug("crnrstn_environmentals :: cookie encryption configured to _CRNRSTN_COOKIE_ENCRYPT_CIPHER[".$oCRNRSTN->opensslCookieEncryptCipher[crc32($this->configSerial)][self::$resourceKey]."] _CRNRSTN_COOKIE_ENCRYPT_HMAC_ALG[".$oCRNRSTN->cookieHmac_algorithm[crc32($this->configSerial)][self::$resourceKey]."].");
+		#self::$oLogger->logDebug("crnrstn_environmentals :: cookie encryption configured to _CRNRSTN_COOKIE_ENCRYPT_CIPHER[".$oCRNRSTN->opensslCookieEncryptCipher[crc32($this->configSerial)][self::$resourceKey]."] _CRNRSTN_COOKIE_ENCRYPT_HMAC_ALG[".$oCRNRSTN->cookieHmac_algorithm[crc32($this->configSerial)][self::$resourceKey]."].");
+		self::$oLogger->logDebug("crnrstn_environmentals :: cookie encryption configured to _CRNRSTN_COOKIE_ENCRYPT_CIPHER[##### REDACTED #####] _CRNRSTN_COOKIE_ENCRYPT_HMAC_ALG[##### REDACTED #####].");
+	}
+	
+	public function initTunnelEncryption($oCRNRSTN){
 		
+		//
+		// TRANSFER COOKIE ENCRYPT PARAMS TO SESSION
+		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"] = $oCRNRSTN->opensslTunnelEncryptCipher[crc32($this->configSerial)][self::$resourceKey];
+		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_SECRET_KEY"] = $oCRNRSTN->opensslTunnelEncryptSecretKey[crc32($this->configSerial)][self::$resourceKey];
+		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_OPTIONS"] = $oCRNRSTN->opensslTunnelEncryptOptions[crc32($this->configSerial)][self::$resourceKey];
+		$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_HMAC_ALG"] = $oCRNRSTN->tunnelHmac_algorithm[crc32($this->configSerial)][self::$resourceKey];
+		
+		#self::$oLogger->logDebug("crnrstn_environmentals :: cookie encryption configured to _CRNRSTN_COOKIE_ENCRYPT_CIPHER[".$oCRNRSTN->opensslTunnelEncryptCipher[crc32($this->configSerial)][self::$resourceKey]."] _CRNRSTN_COOKIE_ENCRYPT_HMAC_ALG[".$oCRNRSTN->tunnelHmac_algorithm[crc32($this->configSerial)][self::$resourceKey]."].");
+		self::$oLogger->logDebug("crnrstn_environmentals :: cookie encryption configured to _CRNRSTN_COOKIE_ENCRYPT_CIPHER[##### REDACTED #####] _CRNRSTN_COOKIE_ENCRYPT_HMAC_ALG[##### REDACTED #####].");
+		
+	}
+	
+	public function paramTunnelEncrypt($data=NULL, $secret_key=NULL){
+		try{
+			if(isset($data)){
+			
+				//
+				// DATA TYPE MUST BE ENCRYPTABLE.
+				if(in_array(gettype($data),self::$encryptableDataTypes)){
+					
+					return $this->tunnelParamEncrypt($data, $secret_key);
+								
+				}else{
+					
+					//
+					// NOT ENCRYPTABLE
+					return NULL;
+					
+				}
+			}else{
+				
+				//
+				// NOT ENCRYPTABLE
+				return NULL;
+				
+			}
+			
+		}catch( Exception $e ) {
+			
+			//
+			// SEND THIS THROUGH THE LOGGER OBJECT
+			self::$oLogger->captureNotice('crnrstn_environmentals->paramTunnelEncrypt()', LOG_EMERG, $e->getMessage());
+		}
+	}
+	
+	public function paramTunnelDecrypt($data=NULL, $secret_key=NULL){
+		try{
+			if(!isset($data) || $data==""){
+				return NULL;	
+			}else{
+				return trim($this->tunnelParamDecrypt($data, $secret_key));
+			}
+			
+		}catch( Exception $e ) {
+			
+			//
+			// SEND THIS THROUGH THE LOGGER OBJECT
+			self::$oLogger->captureNotice('crnrstn_environmentals->paramTunnelDecrypt()', LOG_EMERG, $e->getMessage());
+		}
+	}	
+	
+	private function tunnelParamEncrypt($val, $secret_key=NULL){		
+		try{
+			if(isset($_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"])){
+				
+				if(!isset($secret_key)){
+					$tmp_secret_key = $_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_SECRET_KEY"];
+				}else{
+					$tmp_secret_key = $secret_key;
+				}	
+				
+				#
+				# Source: http://php.net/manual/en/function.openssl-encrypt.php
+				#
+				$ivlen = openssl_cipher_iv_length($cipher=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"]);
+				$iv = openssl_random_pseudo_bytes($ivlen);
+				$ciphertext_raw = openssl_encrypt($val, $_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"], $tmp_secret_key, $options=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_OPTIONS"], $iv);
+				$hmac = hash_hmac($_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_HMAC_ALG"], $ciphertext_raw, $tmp_secret_key, $as_binary=true);
+				$ciphertext = base64_encode( $iv.$hmac.$ciphertext_raw );
+				
+				return $ciphertext;
+			}else{
+				
+				return $val;
+			}
+
+		}catch( Exception $e ) {
+			
+			//
+			// SEND THIS THROUGH THE LOGGER OBJECT
+			self::$oLogger->captureNotice('crnrstn_environmentals->tunnelParamEncrypt()', LOG_EMERG, $e->getMessage());
+		}
+	}
+	
+	private function tunnelParamDecrypt($val, $secret_key=NULL){
+		try{
+			
+			if(isset($_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"])){
+				
+				if(!isset($secret_key)){
+					$tmp_secret_key = $_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_SECRET_KEY"];
+				}else{
+					$tmp_secret_key = $secret_key;
+				}	
+
+				#
+				# Source: http://php.net/manual/en/function.openssl-encrypt.php
+				#
+				$c = base64_decode($val);
+				$ivlen = openssl_cipher_iv_length($cipher=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"]);
+				$iv = substr($c, 0, $ivlen);
+				$hmac = substr($c, $ivlen, $sha2len=32);
+				$ciphertext_raw = substr($c, $ivlen+$sha2len);
+				$original_plaintext = openssl_decrypt($ciphertext_raw, $_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_CIPHER"], $tmp_secret_key, $options=$_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_OPTIONS"], $iv);
+				$calcmac = hash_hmac($_SESSION["CRNRSTN_".crc32($this->configSerial)]["CRNRSTN_".self::$resourceKey]["_CRNRSTN_TUNNEL_ENCRYPT_HMAC_ALG"], $ciphertext_raw, $tmp_secret_key, $as_binary=true);
+				
+				if (hash_equals($hmac, $calcmac))//PHP 5.6+ timing attack safe comparison
+				{
+					return $original_plaintext;
+				}else{
+					
+					//
+					// HOOOSTON...VE HAF PROBLEM!
+					throw new Exception('CRNRSTN Tunnel Param Decrypt Notice :: Oops. Something went wrong. Hash_equals comparison failed during data decryption.');
+				}
+			
+			}else{
+				
+				//
+				// NO ENCRYPTION. RETURN VAL
+				return $val;
+			}
+			
+		}catch( Exception $e ) {
+			
+			//
+			// SEND THIS THROUGH THE LOGGER OBJECT
+			self::$oLogger->captureNotice('crnrstn_environmentals->tunnelParamDecrypt()', LOG_EMERG, $e->getMessage());
+		}
 	}
 	
 	private function initEnvResources($oCRNRSTN){
@@ -537,14 +697,48 @@ background-color:#555555;}
 		
 	}
 	
+	public function wallTime(){
+		$timediff = $this->microtime_float() - $this->starttime;
+		
+		return substr($timediff,0,-8);
+		
+	}
+	
+	public function monitorDeltaTimeFor($watchKey){
+		
+		if(!isset(self::$m_starttime[$watchKey])){
+			self::$m_starttime[$watchKey] = $this->microtime_float();
+			return 0.0;
+		}else{
+			$timediff = $this->microtime_float() - self::$m_starttime[$watchKey];
+			
+			return substr($timediff,0,-8);
+		}
+	}
+	
+	//
+	// SOURCE :: http://www.php.net/manual/en/function.microtime.php
+	private function microtime_float(){
+	    list($usec, $sec) = explode(" ", microtime());
+	    return ((float)$usec + (float)$sec);
+	}
+	
 	//
 	// RETURN HTTP/S PATH OF CURRENT SCRIPT
 	public function currentLocation(){
 		if(isset($_SERVER['HTTPS'])){
-			if($_SERVER['HTTPS']){
+			if($_SERVER['HTTPS'] && ($_SERVER['HTTPS'] != 'off')){
 				self::$requestProtocol='https://';
 			}else{
-				self::$requestProtocol='http://';
+				if(isset($_SERVER['HTTP_X_FORWARDED_PROTO'])){
+					if( !empty( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ){
+						self::$requestProtocol='https://';
+					}else{
+						self::$requestProtocol='http://';
+					}
+				}else{
+					self::$requestProtocol='http://';
+				}
 			}
 		}else{
 			self::$requestProtocol='http://';
@@ -552,6 +746,7 @@ background-color:#555555;}
 		
 		return self::$requestProtocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	}
+	
 	
 	public function getDebug(){
 		

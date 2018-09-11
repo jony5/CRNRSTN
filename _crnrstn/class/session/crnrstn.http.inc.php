@@ -3,9 +3,9 @@
 // J5
 // Code is Poetry */
 #  CRNRSTN Suite :: An Open Source PHP Class Library to facilitate the operation of an application across multiple hosting environments.
-#  Copyright (C) 2012-2018 Evifweb Development
-#  VERSION :: 1.0.0
-#  RELEASE DATE :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
+#  Copyright (C) 2012-2018 eVifweb Development
+#  VERSION :: 1.0.1
+#  RELEASE DATE (v1.0.0) :: July 4, 2018 - Happy Independence Day from my dog and I to you...wherever and whenever you are.
 #  AUTHOR :: Jonathan 'J5' Harris, Lead Full Stack Developer
 #  URI :: http://crnrstn.evifweb.com/
 #  OVERVIEW :: CRNRSTN is an open source PHP class library that facilitates the operation of an application within multiple server 
@@ -42,7 +42,7 @@
 /*
 // CLASS :: crnrstn_http_manager
 // AUTHOR :: Jonathan 'J5' Harris <jharris@evifweb.com>
-// VERSION :: 1.0.0
+// VERSION :: 1.0.1
 */
 class crnrstn_http_manager {
 	public $httpHeaders;
@@ -73,7 +73,8 @@ class crnrstn_http_manager {
 			break;		
 			default:
 				$httpHeaders = "";
-				for($i=0;$i<sizeof(self::$httpHeader_ARRAY);$i++){
+				$tmp_loop_size = sizeof(self::$httpHeader_ARRAY);
+				for($i=0;$i<$tmp_loop_size;$i++){
 					$httpHeaders .= self::$httpHeader_ARRAY[$i].',';
 				}
 				
