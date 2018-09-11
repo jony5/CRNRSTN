@@ -98,7 +98,7 @@ class crnrstn_environmentals {
 			try{
 				
 					//
-					//	DETERMINE KEY DESIGNATING THE RUNNING ENVIRONMENT, WHERE KEY = CRC32(env key)
+					// DETERMINE KEY DESIGNATING THE RUNNING ENVIRONMENT, WHERE KEY = CRC32(env key)
 					self::$resourceKey = $oCRNRSTN->getServerEnv();
 					self::$oLogger->debugStr .= $oCRNRSTN->getDebugStr();
 					$oCRNRSTN->clearDebugStr();
