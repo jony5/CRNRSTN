@@ -174,6 +174,14 @@ class crnrstn_session_manager {
 							return (float) self::$cacheSessionParam_ARRAY[$sessParam];
 						}
 					break;
+					case 'boolean':
+						if(isset(self::$cacheSessionParam_ARRAY[$sessParam])){
+							return (boolean) self::$cacheSessionParam_ARRAY[$sessParam];
+						}else{
+							self::$cacheSessionParam_ARRAY[$sessParam] = trim($this->sessionParamDecrypt($_SESSION["CRNRSTN_".crc32($_SESSION['CRNRSTN_CONFIG_SERIAL'])]["CRNRSTN_".$this->resourceKey]['CRNRSTN_'.crc32($sessParam)]));
+							return (boolean) self::$cacheSessionParam_ARRAY[$sessParam];
+						}
+					break;
 				}
 			
 			}else{
