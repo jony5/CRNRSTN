@@ -53,7 +53,7 @@ class crnrstn {
 	public $opensslCookieEncryptOptions = array();
 	public $cookieHmac_algorithm = array();
 	
-	public $oensslTunnelEncryptCipher = array();
+	public $opensslTunnelEncryptCipher = array();
 	public $opensslTunnelEncryptSecretKey = array();
 	public $opensslTunnelEncryptOptions = array();
 	public $tunnelHmac_algorithm = array();
