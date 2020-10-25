@@ -33,12 +33,12 @@ Overview of configuration/installation steps ::
    landscape of hosting environments within which your application will be running. Use the 
    $_SERVER data presented by crnrstn_config_debug.php within each environment from Step 2 above 
    (see working debug example at http://crnrstn.evifweb.com/crnrstn_config_debug.php to review debug 
-   output of CRNRSTN :: when fully configured). The CRNRSTN :: debugger assumes that $_SERVER param 
-   "SERVER_NAME" has been defined for each environment...so at least define that one (1) SERVER 
-   param through defineEnvResource() for each hosting environment to support the environmental 
-   detection services of CRNRSTN ::. When keying off of SERVER_NAME, WWW and non-WWW domain 
-   formats will indicate different environments...so perhaps make a separate profile for each in 
-   the configuration...or key off another data point like server IP.
+   output of CRNRSTN :: when fully configured). The CRNRSTN :: debugger (not CRNRSTN ::, itself) assumes 
+   that $_SERVER param "SERVER_NAME" has been defined for each environment...so at least define that 
+   one (1) SERVER param through defineEnvResource() for each hosting environment to support the 
+   environmental detection services of CRNRSTN ::. When keying off of SERVER_NAME, WWW and non-WWW 
+   domain formats will indicate different environments...so perhaps make a separate profile for each 
+   in the configuration...or key off another data point like server IP.
    
 4) Promote this updated CRNRSTN :: configuration file from Step 3 along with any configured 
    configuration include files (for *database connectivity and *IP authorization) to all of your 
