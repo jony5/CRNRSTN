@@ -5,7 +5,7 @@ preprod, production) effectively and properly joining the "wall of SERVER" to th
 "wall of application"...creating the two into one house. With this tool, data and 
 functionality with characteristics that inherently create distinctions from one 
 environment to the next...such as IP address restrictions, error logging profiles, 
-and database authentication credentials...can all be managed all together...from one place.
+and database authentication credentials...can all be managed...all together...from one place.
 
 The CRNRSTN Suite :: can be configured for your environment(s) within a short amount of 
 time. Only FTP access to a "web accessible" directory for each environment is needed. This guide 
