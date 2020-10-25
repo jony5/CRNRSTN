@@ -37,8 +37,9 @@ Overview of configuration/installation steps ::
    that $_SERVER param "SERVER_NAME" has been defined for each environment...so at least define that 
    one (1) SERVER param through defineEnvResource() for each hosting environment to support the 
    environmental detection services of CRNRSTN ::. When keying off of SERVER_NAME, WWW and non-WWW 
-   domain formats will indicate different environments...so perhaps make a separate profile for each 
-   in the configuration...or key off another data point like server IP.
+   domain formats should indicate different environments...,so there may need to be two (2) separate 
+   profiles...one for each instance of SERVER_NAME...in the configuration file. Otherwise, only the 
+   SERVER_NAME which is configured through CRNRSTN :: will work. Similiar to an SSL cert on a box.
    
 4) Promote this updated CRNRSTN :: configuration file from Step 3 along with any configured 
    configuration include files (for *database connectivity and *IP authorization) to all of your 
